@@ -37,7 +37,7 @@ const ui = (state = initialState, action) => {
     case AuthActType.ACT_AUTHENTICATE_SUCCESS:
       return {
         ...state,
-        isLogin: true
+        isLogin: false
       };
 
     case AuthActType.VALIDATE_TOKEN:
