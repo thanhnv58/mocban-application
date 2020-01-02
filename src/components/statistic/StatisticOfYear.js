@@ -67,7 +67,7 @@ class StatisticOfYear extends Component {
                 required
               />
             </Grid>
-            <Grid item xs={12} lg={2}>
+            <Grid item xs={12} lg={4}>
               <Box display="flex" justifyContent="center">
                 <div className={classes.wrapper}>
                   <Button
