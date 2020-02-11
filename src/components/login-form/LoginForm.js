@@ -14,10 +14,10 @@ import { Field, reduxForm } from "redux-form";
 import { authenticate } from "../../actions/auth-action/actions";
 import Copyright from "../../components/Copyright";
 import * as mui from "./../../utils/mui";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 import styles from "./styles";
 
-const grecaptchaObject = window.grecaptcha;
+// const grecaptchaObject = window.grecaptcha;
 
 class LoginForm extends Component {
   constructor(props) {
@@ -96,14 +96,15 @@ class LoginForm extends Component {
                 )}
               </div>
             </Box>
-            <Box display="flex" justifyContent="center" mt={2}>
+            {/* <Box display="flex" justifyContent="center" mt={2}>
               <ReCAPTCHA
                 ref={r => (this.recaptcha = r)}
-                sitekey="6Lf_h88UAAAAAJVfG5sI7crmtasKnyfoCzJy5Tpm"
+                // sitekey="6Lf_h88UAAAAAJVfG5sI7crmtasKnyfoCzJy5Tpm" // local
+                sitekey="6Lf_h88UAAAAAJVfG5sI7crmtasKnyfoCzJy5Tpm" // server
                 onChange={this.onChange}
                 grecaptcha={grecaptchaObject}
               />
-            </Box>
+            </Box> */}
 
             {/* <Grid container>
               <Grid item xs>
