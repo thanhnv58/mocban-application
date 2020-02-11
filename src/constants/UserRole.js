@@ -1,5 +1,6 @@
 export const CLIENT = "CLIENT";
 export const SALE = "SALE";
+export const ACCOUNTANT = "ACCOUNTANT";
 export const DESIGN = "DESIGN";
 export const PRODUCER = "PRODUCER";
 export const PRODUCER_LEADER = "PRODUCER_LEADER";

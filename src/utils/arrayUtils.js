@@ -27,3 +27,20 @@ export const findIndexOfElementInArray = (arr, conditionalFunct) => {
 
   return result;
 };
+
+export const removeItemWith = (arr, conditionalFunct) => {
+  if (!arr || arr.length === 0) {
+    return -1;
+  }
+
+  let result = -1;
+  arr.forEach((e, index) => {
+    if (conditionalFunct(e)) {
+      result = index;
+    }
+  });
+
+  arr.splice(result, 1);
+
+  return arr;
+};

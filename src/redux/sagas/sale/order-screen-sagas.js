@@ -1,5 +1,5 @@
-import { call, put, takeEvery } from "redux-saga/effects";
-import * as SaleOrderScreenActionType from "../../../actions/sale/order-screen-action/types";
+import { call, put, takeEvery, select } from "redux-saga/effects";
+import * as OrderScreenActionType from "../../../actions/sale/order-screen-action/types";
 import * as orderApis from "../../../utils/api/orderApis";
 import * as transactionApi from "../../../utils/api/transactionApi";
 import * as toastUtils from "../../../utils/toastUtils";
@@ -11,7 +11,7 @@ function* createOrder(action) {
 
   if (response === null) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_CREATE_ORDER_FAILED
+      type: OrderScreenActionType.ACT_CREATE_ORDER_FAILED
     });
     return;
   }
@@ -19,19 +19,19 @@ function* createOrder(action) {
   // Case SUCCESS
   toastUtils.toastSuccess("Tạo đơn hàng thành công!");
   yield put({
-    type: SaleOrderScreenActionType.ACT_CREATE_ORDER_SUCCESS,
+    type: OrderScreenActionType.ACT_CREATE_ORDER_SUCCESS,
     newOrder: response.data
   });
 }
 
-function* searchOrderByClientId(action) {
-  let { clientId } = action;
+function* getOrderOfClient(action) {
+  let { clientUsername } = action;
 
-  const response = yield call(orderApis.searchOrderByClientId, clientId, 0);
+  const response = yield call(orderApis.getOrdersOfClient, clientUsername, 0);
 
   if (response === null) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID_FAILED
+      type: OrderScreenActionType.GET_ORDER_OF_CLIENT_FAILED
     });
     return;
   }
@@ -40,15 +40,16 @@ function* searchOrderByClientId(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID_NO_CONTENT
+      type: OrderScreenActionType.GET_ORDER_OF_CLIENT_NO_CONTENT
     });
     return;
   }
 
   // Case SUCCESS
   yield put({
-    type: SaleOrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID_SUCCESS,
-    pageOrderRes: response.data
+    type: OrderScreenActionType.GET_ORDER_OF_CLIENT_SUCCESS,
+    pageOrderRes: response.data,
+    clientUsername
   });
 }
 
@@ -57,7 +58,7 @@ function* fetchListOrder(action) {
 
   if (response === null) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_FETCH_LIST_ORDER_FAILED
+      type: OrderScreenActionType.ACT_FETCH_LIST_ORDER_FAILED
     });
     return;
   }
@@ -66,15 +67,36 @@ function* fetchListOrder(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_FETCH_LIST_ORDER_NO_CONTENT
+      type: OrderScreenActionType.ACT_FETCH_LIST_ORDER_NO_CONTENT
     });
     return;
   }
 
   // Case SUCCESS
   yield put({
-    type: SaleOrderScreenActionType.ACT_FETCH_LIST_ORDER_SUCCESS,
+    type: OrderScreenActionType.ACT_FETCH_LIST_ORDER_SUCCESS,
     pageOrderRes: response.data
+  });
+}
+
+function* loadMoreListOrder(action) {
+  const pageOrder = yield select(state => state.saleReducer.pageOrder);
+
+  let { currentPage } = pageOrder;
+
+  const response = yield call(orderApis.fetchListOrder, currentPage + 1);
+
+  if (response === null) {
+    yield put({
+      type: OrderScreenActionType.LOAD_MORE_LIST_ORDER_FAILED
+    });
+    return;
+  }
+
+  // Case SUCCESS
+  yield put({
+    type: OrderScreenActionType.LOAD_MORE_LIST_ORDER_SUCCESS,
+    pageLoadMoreOrderRes: response.data
   });
 }
 
@@ -85,26 +107,26 @@ function* getOrderDetail(action) {
 
   if (response === null) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_GET_ORDER_DETAIL_FAILED
+      type: OrderScreenActionType.ACT_GET_ORDER_DETAIL_FAILED
     });
     return;
   }
 
   // Case SUCCESS
   yield put({
-    type: SaleOrderScreenActionType.ACT_GET_ORDER_DETAIL_SUCCESS,
+    type: OrderScreenActionType.ACT_GET_ORDER_DETAIL_SUCCESS,
     orderDetail: response.data
   });
 }
 
-function* doTransaction(action) {
+function* createTransaction(action) {
   let { requestDto } = action;
 
-  const response = yield call(orderApis.doTransaction, requestDto);
+  const response = yield call(transactionApi.createTransaction, requestDto);
 
   if (response === null) {
     yield put({
-      type: SaleOrderScreenActionType.ACT_DO_TRANSACTION_FAILED
+      type: OrderScreenActionType.ACT_DO_TRANSACTION_FAILED
     });
     return;
   }
@@ -112,7 +134,7 @@ function* doTransaction(action) {
   // Case SUCCESS
   toastUtils.toastSuccess("Thanh toán thành công!");
   yield put({
-    type: SaleOrderScreenActionType.ACT_DO_TRANSACTION_SUCCESS,
+    type: OrderScreenActionType.ACT_DO_TRANSACTION_SUCCESS,
     transactionResponse: response.data
   });
 }
@@ -128,7 +150,7 @@ function* getTransactionOfOrder(action) {
 
   if (response === null) {
     yield put({
-      type: SaleOrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_FAILED
+      type: OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_FAILED
     });
     return;
   }
@@ -137,8 +159,7 @@ function* getTransactionOfOrder(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type:
-        SaleOrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_NO_CONTENT,
+      type: OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_NO_CONTENT,
       orderId
     });
     return;
@@ -146,24 +167,44 @@ function* getTransactionOfOrder(action) {
 
   // Case SUCCESS
   yield put({
-    type: SaleOrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_SUCCESS,
+    type: OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_SUCCESS,
     pageTransactionRes: response.data,
     orderId
   });
 }
 
+function* updateClientRequest(action) {
+  let { requestBody } = action;
+
+  const response = yield call(orderApis.updateClientRequest, requestBody);
+
+  if (response === null) {
+    yield put({
+      type: OrderScreenActionType.UPDATE_CLIENT_REQUEST_FAILED
+    });
+    return;
+  }
+
+  // Case SUCCESS
+  toastUtils.toastSuccess("Cập nhật yêu cầu khách hàng thành công!");
+  yield put({
+    type: OrderScreenActionType.UPDATE_CLIENT_REQUEST_SUCCESS,
+    updateClientRequestRes: response.data
+  });
+}
+
 export const sale_OrderScreenSagas = [
-  takeEvery(SaleOrderScreenActionType.ACT_CREATE_ORDER, createOrder),
-  takeEvery(SaleOrderScreenActionType.ACT_FETCH_LIST_ORDER, fetchListOrder),
-  takeEvery(SaleOrderScreenActionType.ACT_GET_ORDER_DETAIL, getOrderDetail),
-  takeEvery(SaleOrderScreenActionType.ACT_DO_TRANSACTION, doTransaction),
-  takeEvery(
-    SaleOrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID,
-    searchOrderByClientId
-  ),
+  takeEvery(OrderScreenActionType.ACT_CREATE_ORDER, createOrder),
+  takeEvery(OrderScreenActionType.ACT_FETCH_LIST_ORDER, fetchListOrder),
+  takeEvery(OrderScreenActionType.LOAD_MORE_LIST_ORDER, loadMoreListOrder),
+  takeEvery(OrderScreenActionType.ACT_GET_ORDER_DETAIL, getOrderDetail),
+  takeEvery(OrderScreenActionType.ACT_DO_TRANSACTION, createTransaction),
+  takeEvery(OrderScreenActionType.GET_ORDER_OF_CLIENT, getOrderOfClient),
 
   takeEvery(
-    SaleOrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER,
+    OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER,
     getTransactionOfOrder
-  )
+  ),
+
+  takeEvery(OrderScreenActionType.UPDATE_CLIENT_REQUEST, updateClientRequest)
 ];

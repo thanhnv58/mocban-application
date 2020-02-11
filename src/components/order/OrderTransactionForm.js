@@ -1,4 +1,4 @@
-import { Box, Button, Grid, InputAdornment } from "@material-ui/core";
+import { Button, Grid, InputAdornment } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import { Field, reduxForm } from "redux-form";
-import { doTransaction } from "../../actions/sale/order-screen-action/actions";
+import { createTransaction } from "../../actions/sale/order-screen-action/actions";
 import { getCurrencyValue } from "../../utils/helpers";
 import * as mui from "../../utils/mui";
 import normalizeCurrency from "../../views/normalizeCurrency";
@@ -14,17 +14,8 @@ import * as TransactionType from "../../constants/TransactionType";
 import styles from "./styles";
 
 class OrderTransactionForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      orderType: null,
-      arrItems: []
-    };
-  }
-
   render() {
-    let { handleSubmit, classes, pristine, invalid, isLoading4 } = this.props;
+    let { handleSubmit, classes, pristine, invalid, isLoading2 } = this.props;
 
     return (
       <form
@@ -33,8 +24,8 @@ class OrderTransactionForm extends Component {
         onSubmit={handleSubmit(this.onSubmit)}
         className={classes.formTransaction}
       >
-        <Grid container spacing={2}>
-          <Grid item lg={6} md={6} xs={12}>
+        <Grid container spacing={1} direction="row" alignItems="center">
+          <Grid item xs={12} lg={4}>
             <Field
               name="txtAmount"
               component={mui.renderTextField}
@@ -52,7 +43,7 @@ class OrderTransactionForm extends Component {
             />
           </Grid>
 
-          <Grid item lg={6} md={6} xs={12}>
+          <Grid item xs={12} lg={5}>
             <Field
               name="txtMessageAmount"
               component={mui.renderTextField}
@@ -64,28 +55,24 @@ class OrderTransactionForm extends Component {
             />
           </Grid>
 
-          <Grid item lg={12} xs={12} md={12}>
-            <Box display="flex" flexDirection="row">
-              <Box mr={1}>
-                <div className={classes.wrapper}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                    endIcon={<LocalAtmIcon />}
-                    disabled={pristine || invalid || isLoading4}
-                  >
-                    Thanh toán
-                  </Button>
-                  {isLoading4 && (
-                    <CircularProgress
-                      size={24}
-                      className={classes.buttonProgress}
-                    />
-                  )}
-                </div>
-              </Box>
-            </Box>
+          <Grid item>
+            <div className={classes.wrapper}>
+              <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                endIcon={<LocalAtmIcon />}
+                disabled={pristine || invalid || isLoading2}
+              >
+                Thanh toán
+              </Button>
+              {isLoading2 && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
           </Grid>
         </Grid>
       </form>
@@ -95,7 +82,7 @@ class OrderTransactionForm extends Component {
   onSubmit = formData => {
     let { txtAmount, txtMessageAmount } = formData;
 
-    let { id, reset, orderId } = this.props;
+    let { id, reset } = this.props;
 
     let transactions = [
       {
@@ -106,13 +93,12 @@ class OrderTransactionForm extends Component {
 
     let requestDto = {
       orderId: id,
-      orderIdStr: orderId,
       type: TransactionType.INCOME,
       transactions: transactions
     };
 
-    let { doTransaction } = this.props;
-    doTransaction(requestDto);
+    let { createTransaction } = this.props;
+    createTransaction(requestDto);
 
     reset();
   };
@@ -156,13 +142,13 @@ export const validate = values => {
 };
 
 const mapStateToProps = state => ({
-  isLoading4: state.saleReducer.ui.isLoading4
+  isLoading2: state.saleReducer.ui.isLoading2
 });
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      doTransaction
+      createTransaction
     },
     dispatch
   );

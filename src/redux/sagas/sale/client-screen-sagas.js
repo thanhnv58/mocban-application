@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery, select } from "redux-saga/effects";
 import * as ClientScreenType from "./../../../actions/sale/client-screen-action/types";
 import * as UserRole from "./../../../constants/UserRole";
 import * as userApis from "./../../../utils/api/userApis";
@@ -50,7 +50,33 @@ function* fetchListClient(action) {
   });
 }
 
+function* loadMoreClient(action) {
+  const pageClient = yield select(state => state.saleReducer.pageClient);
+
+  let { currentPage } = pageClient;
+
+  const response = yield call(
+    userApis.getAllUser,
+    currentPage + 1,
+    UserRole.CLIENT
+  );
+
+  if (response === null) {
+    yield put({
+      type: ClientScreenType.ACT_LOAD_MORE_CLIENT_FAILED
+    });
+    return;
+  }
+
+  // Case SUCCESS
+  yield put({
+    type: ClientScreenType.ACT_LOAD_MORE_CLIENT_SUCCESS,
+    pageLoadMoreClientRes: response.data
+  });
+}
+
 export const sale_ClientScreenSagas = [
   takeEvery(ClientScreenType.ACT_CREATE_CLIENT, createClient),
-  takeEvery(ClientScreenType.ACT_FETCH_LIST_CLIENT, fetchListClient)
+  takeEvery(ClientScreenType.ACT_FETCH_LIST_CLIENT, fetchListClient),
+  takeEvery(ClientScreenType.ACT_LOAD_MORE_CLIENT, loadMoreClient)
 ];

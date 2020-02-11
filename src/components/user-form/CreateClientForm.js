@@ -1,6 +1,5 @@
 import { Button, Grid, Box } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -8,7 +7,6 @@ import { bindActionCreators, compose } from "redux";
 import { Field, reduxForm } from "redux-form";
 import { createClient } from "../../actions/sale/client-screen-action/actions";
 import * as UserRole from "../../constants/UserRole";
-import { getUserRole } from "../../utils/helpers";
 import * as mui from "../../utils/mui";
 import styles from "./styles";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
@@ -16,14 +14,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 class CreateClientForm extends Component {
   render() {
-    let {
-      handleSubmit,
-      classes,
-      pristine,
-      invalid,
-      isLoading1,
-      reset
-    } = this.props;
+    let { handleSubmit, classes, pristine, invalid, isLoading1 } = this.props;
 
     return (
       <form
@@ -125,7 +116,7 @@ class CreateClientForm extends Component {
                     endIcon={<PersonAddIcon />}
                     disabled={pristine || invalid || isLoading1}
                   >
-                    "Thêm mới"
+                    Thêm mới
                   </Button>
                   {isLoading1 && (
                     <CircularProgress
@@ -141,9 +132,7 @@ class CreateClientForm extends Component {
                     color="primary"
                     variant="contained"
                     endIcon={<RotateLeftIcon />}
-                    onClick={() => {
-                      reset();
-                    }}
+                    onClick={this.resetForm}
                   >
                     Reset
                   </Button>
@@ -155,6 +144,13 @@ class CreateClientForm extends Component {
       </form>
     );
   }
+
+  resetForm = () => {
+    let { reset, resetUsername } = this.props;
+
+    reset();
+    resetUsername();
+  };
 
   onSubmit = formData => {
     let {
@@ -179,18 +175,6 @@ class CreateClientForm extends Component {
     let { createClient } = this.props;
     createClient(client);
   };
-
-  listRole = () => {
-    let listRole = [UserRole.CLIENT];
-
-    return listRole.map((role, i) => {
-      return (
-        <MenuItem key={i} value={role}>
-          {getUserRole(role)}
-        </MenuItem>
-      );
-    });
-  };
 }
 
 const withMyStyle = withStyles(styles);
@@ -199,7 +183,6 @@ export const validate = values => {
   const errors = {};
 
   let {
-    txtUsername,
     txtFullName,
     txtPassword,
     txtRePassword,
@@ -209,7 +192,6 @@ export const validate = values => {
   } = values;
 
   if (
-    !txtUsername &&
     !txtFullName &&
     !txtPassword &&
     !txtRePassword &&
@@ -221,10 +203,6 @@ export const validate = values => {
   }
 
   const listField = [
-    {
-      field: "txtUsername",
-      message: "Nhập tên đăng nhập!"
-    },
     {
       field: "txtFullName",
       message: "Nhập tên đầy đủ!"
@@ -246,10 +224,6 @@ export const validate = values => {
       message: "Nhập thông tin email!"
     },
     {
-      field: "txtRole",
-      message: "Chọn chức năng cho người dùng"
-    },
-    {
       field: "txtAddress",
       message: "Nhập thông tin địa chỉ!"
     }
@@ -261,11 +235,6 @@ export const validate = values => {
       return errors;
     }
   });
-
-  if (txtUsername && txtUsername.includes(" ")) {
-    errors.txtUsername = "Tên đăng nhập không được chứa khoảng trắng!";
-    return errors;
-  }
 
   if (txtPassword && txtRePassword && txtPassword !== txtRePassword) {
     errors.txtRePassword = "Mật khẩu xác nhận chưa chính xác!";
@@ -297,7 +266,8 @@ const connectRedux = connect(mapStateToProps, mapDispatchToProps);
 
 const userForm = reduxForm({
   form: "CREATE_CLIENT_FORM",
-  validate
+  validate,
+  enableReinitialize: true
 });
 
 export default compose(withMyStyle, connectRedux, userForm)(CreateClientForm);

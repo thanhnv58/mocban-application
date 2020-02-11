@@ -10,29 +10,34 @@ import styles from "./styles";
 
 class OrderDetailItem extends Component {
   render() {
-    let { classes, orderDetail } = this.props;
+    let { orderDetail, classes } = this.props;
 
     return (
-      <React.Fragment>
-        <Paper className={classes.paper}>
-          <Grid container spacing={2}>
-            <Grid item ms={12} md={12} lg={12}>
-              <Typography variant="h6" align="left">
-                <b>{orderDetail.orderId}</b>
-              </Typography>
-              <Box mt={2} ml={2}>
-                <Divider />
-              </Box>
-            </Grid>
-            <Grid item ms={12} md={12} lg={12}>
-              {this.renderClientInfo()}
-            </Grid>
-            <Grid item ms={12} md={12} lg={12}>
-              <OrderSteperView orderDetail={orderDetail} />
-            </Grid>
-          </Grid>
-        </Paper>
-      </React.Fragment>
+      <Grid
+        container
+        spacing={1}
+        component={Paper}
+        className={classes.container}
+      >
+        <Grid item xs={12} lg={12}>
+          <Typography variant="body1" align="left">
+            Mã đơn hàng: <b>{orderDetail.orderName}</b>
+          </Typography>
+        </Grid>
+        <Grid item xs={12} lg={12}>
+          <Box mt={1} mb={1}>
+            <Divider />
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} lg={12}>
+          {this.renderClientInfo()}
+        </Grid>
+
+        <Grid item xs={12} lg={12}>
+          <OrderSteperView orderDetail={orderDetail} />
+        </Grid>
+      </Grid>
     );
   }
 

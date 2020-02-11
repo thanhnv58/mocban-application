@@ -6,10 +6,9 @@ export const fetchListClient = pageIndex => {
   };
 };
 
-export const loadMoreClient = pageIndex => {
+export const loadMoreClient = () => {
   return {
-    type: types.ACT_LOAD_MORE_CLIENT,
-    pageIndex
+    type: types.ACT_LOAD_MORE_CLIENT
   };
 };
 

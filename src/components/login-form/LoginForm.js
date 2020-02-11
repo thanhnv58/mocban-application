@@ -14,11 +14,31 @@ import { Field, reduxForm } from "redux-form";
 import { authenticate } from "../../actions/auth-action/actions";
 import Copyright from "../../components/Copyright";
 import * as mui from "./../../utils/mui";
+import ReCAPTCHA from "react-google-recaptcha";
 import styles from "./styles";
 
+const grecaptchaObject = window.grecaptcha;
+
 class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      notPassCaptcha: true
+    };
+  }
+
+  onChange = value => {
+    if (value) {
+      this.setState({
+        notPassCaptcha: false
+      });
+    }
+  };
+
   render() {
-    let { handleSubmit, classes } = this.props;
+    let { classes, pristine, invalid, isLogin, handleSubmit } = this.props;
+    let { notPassCaptcha } = this.state;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -56,7 +76,35 @@ class LoginForm extends Component {
               type="password"
               autoComplete="on"
             />
-            {this.renderSubmitBtn()}
+
+            <Box mt={2}>
+              <div className={classes.wrapper}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  disabled={pristine || invalid || isLogin || notPassCaptcha}
+                >
+                  Sign In
+                </Button>
+                {isLogin && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
+            </Box>
+            <Box display="flex" justifyContent="center" mt={2}>
+              <ReCAPTCHA
+                ref={r => (this.recaptcha = r)}
+                sitekey="6Lf_h88UAAAAAJVfG5sI7crmtasKnyfoCzJy5Tpm"
+                onChange={this.onChange}
+                grecaptcha={grecaptchaObject}
+              />
+            </Box>
+
             {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -71,7 +119,7 @@ class LoginForm extends Component {
             </Grid> */}
           </form>
         </div>
-        <Box mt={8}>
+        <Box mt={5}>
           <Copyright />
         </Box>
       </Container>
@@ -84,37 +132,10 @@ class LoginForm extends Component {
 
     authenticate(txtUsername, txtPassword);
   };
-
-  renderSubmitBtn = () => {
-    let { classes, pristine, invalid, isLogin } = this.props;
-
-    let xhtml = null;
-
-    xhtml = (
-      <div className={classes.wrapper}>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          disabled={pristine || invalid || isLogin}
-          className={classes.submit}
-        >
-          Sign In
-        </Button>
-        {isLogin && (
-          <CircularProgress size={24} className={classes.buttonProgress} />
-        )}
-      </div>
-    );
-
-    return xhtml;
-  };
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  isLogin: state.ui.isLogin
+  isLogin: state.auth.isLogin
 });
 
 const mapDispatchToProps = dispatch => {

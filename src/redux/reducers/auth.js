@@ -3,6 +3,8 @@ import moment from "moment";
 import { getLocalToken } from "./../../utils/helpers";
 
 const initialState = {
+  isLogin: false,
+  isValidateToken: false,
   isAuthenticated: null,
   token: null,
   expiredTime: null,
@@ -12,10 +14,29 @@ const initialState = {
 
 const auth = (state = initialState, action) => {
   switch (action.type) {
+    case AuthActTypes.ACT_AUTHENTICATE:
+      return {
+        ...state,
+        isLogin: true
+      };
+
+    case AuthActTypes.ACT_AUTHENTICATE_FAILED:
+      return {
+        ...state,
+        isLogin: false
+      };
+
+    case AuthActTypes.VALIDATE_TOKEN:
+      return {
+        ...state,
+        isValidateToken: true
+      };
+
     case AuthActTypes.VALIDATE_TOKEN_FAILED:
       return {
         ...state,
-        isAuthenticated: false
+        isAuthenticated: false,
+        isValidateToken: false
       };
     case AuthActTypes.VALIDATE_TOKEN_SUCCESS:
       let { validateUser } = action;
@@ -23,6 +44,7 @@ const auth = (state = initialState, action) => {
 
       return {
         ...state,
+        isValidateToken: false,
         isAuthenticated: true,
         token: authObj.token,
         expiredTime: moment(authObj.expiredTime).format("YYYY-MM-DDTHH:mm:ssZ"),
@@ -39,6 +61,7 @@ const auth = (state = initialState, action) => {
 
       return {
         ...state,
+        isLogin: false,
         isAuthenticated: true,
         token,
         expiredTime,

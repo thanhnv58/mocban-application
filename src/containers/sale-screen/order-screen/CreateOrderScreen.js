@@ -1,26 +1,24 @@
 import {
   Box,
+  Button,
   CssBaseline,
-  Divider,
-  Grid,
-  Paper,
-  Typography,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
-  Button
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Typography
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import Copyright from "../../../components/Copyright";
 import CreateOrderForm from "../../../components/order/CreateOrderForm";
 import { confirmCreateOrderSuccess } from "./../../../actions/sale/order-screen-action/actions";
-import DoneRoundedIcon from "@material-ui/icons/DoneRounded";
 import styles from "./styles";
-import { Redirect } from "react-router-dom";
 
 class CreateOrderScreen extends Component {
   constructor(props) {
@@ -32,17 +30,17 @@ class CreateOrderScreen extends Component {
   }
 
   render() {
-    let { classes, clientId, needConfirm1 } = this.props;
+    let { clientUsername, needConfirm1 } = this.props;
 
     let initialValues = {
-      txtUsername: clientId ? clientId : ""
+      txtUsername: clientUsername ? clientUsername : ""
     };
 
     if (this.state.redirectToOrderList === true) {
       return (
         <Redirect
           to={{
-            pathname: "/sale/orders/list"
+            pathname: `/sale/list-order/${clientUsername}`
           }}
         />
       );
@@ -52,21 +50,13 @@ class CreateOrderScreen extends Component {
       <React.Fragment>
         {needConfirm1 && this.renderDialogConfirm()}
         <CssBaseline />
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid item xs={12} md={7}>
-            <Paper className={classes.paperForm}>
-              <Typography variant="h6" align="left">
-                Tạo đơn hàng
-              </Typography>
-              <Box m={2}>
-                <Divider />
-              </Box>
-              <Box mt={3} ml={3} mr={3} mb={1}>
-                <CreateOrderForm initialValues={initialValues} />
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
+        <Typography variant="h6" align="left">
+          Tạo đơn hàng
+        </Typography>
+
+        <Box mt={3} ml={3} mr={3} mb={1}>
+          <CreateOrderForm initialValues={initialValues} />
+        </Box>
         <Box mt={4}></Box>
 
         <Copyright />
@@ -92,19 +82,27 @@ class CreateOrderScreen extends Component {
           {"Xác nhận tạo đơn hàng"}
         </DialogTitle>
         <DialogContent>
-          <Grid container>
+          <Grid container spacing={1}>
             <Grid item xs={12} lg={12}>
-              <Typography>Bạn đã tạo đơn hàng thành công!</Typography>
               <Typography>
-                Mã KH: <b>{newOrder.clientUsername}</b>
+                <b style={{ color: "green" }}>
+                  Bạn đã tạo đơn hàng thành công!
+                </b>
               </Typography>
+            </Grid>
+            <Grid item xs={12} lg={6}>
               <Typography>
-                Mã đơn hàng: <b>{newOrder.orderId}</b>
+                Mã KH: <b>{newOrder.client.username}</b>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <Typography>
+                Mã ĐH: <b>{newOrder.orderName}</b>
               </Typography>
             </Grid>
             <Grid item xs={12} lg={12}>
               <Box display="flex" justifyContent="center" m={1}>
-                <DoneRoundedIcon style={{ color: "#1b5e20", fontSize: 60 }} />
+                <ThumbUpAltIcon style={{ color: "#1565c0", fontSize: 60 }} />
               </Box>
             </Grid>
           </Grid>

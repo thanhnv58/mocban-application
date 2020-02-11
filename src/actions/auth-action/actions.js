@@ -15,7 +15,7 @@ export const authenticate = (username, password) => {
   };
 };
 
-export const actValidateToke = () => {
+export const actValidateToken = () => {
   return {
     type: types.VALIDATE_TOKEN
   };

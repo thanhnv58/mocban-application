@@ -1,4 +1,4 @@
-import * as SaleOrderScreenActionType from "../../../../actions/sale/order-screen-action/types";
+import * as OrderScreenActionType from "../../../../actions/sale/order-screen-action/types";
 import * as MainScreenActType from "../../../../actions/auth-action/types";
 
 const initialState = {
@@ -11,16 +11,8 @@ const initialState = {
 };
 
 const pageTransactionIncomeDetail = (state = initialState, action) => {
-  let {
-    currentPage,
-    currentTotal,
-    transactions,
-    orderId,
-    totalElements
-  } = state;
-
   switch (action.type) {
-    case SaleOrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_SUCCESS:
+    case OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_SUCCESS:
       let { pageTransactionRes } = action;
       return {
         ...state,
@@ -31,7 +23,7 @@ const pageTransactionIncomeDetail = (state = initialState, action) => {
         currentTotal: pageTransactionRes.elements.length,
         transactions: pageTransactionRes.elements
       };
-    case SaleOrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_NO_CONTENT:
+    case OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER_NO_CONTENT:
       return {
         ...state,
         orderId: action.orderId,
@@ -41,22 +33,23 @@ const pageTransactionIncomeDetail = (state = initialState, action) => {
         currentTotal: 0,
         transactions: []
       };
-    case SaleOrderScreenActionType.ACT_DO_TRANSACTION_SUCCESS:
+    case OrderScreenActionType.ACT_DO_TRANSACTION_SUCCESS:
       let { transactionResponse } = action;
+      let { orderId, transactions } = transactionResponse;
 
-      if (currentPage !== -1 && currentTotal !== -1) {
-        if (transactionResponse.orderId === orderId) {
-          transactions = transactionResponse.transactions.concat(transactions);
-          totalElements += 1;
-          currentTotal += 1;
-        }
+      if (orderId === -1 || orderId !== state.orderId) {
+        return {
+          ...state
+        };
+      } else {
+        state.transactions.push(...transactions);
+
+        return {
+          ...state,
+          totalElements: state.totalElements + transactions.length,
+          currentTotal: state.transactions.length
+        };
       }
-      return {
-        ...state,
-        transactions: [...transactions],
-        totalElements: totalElements,
-        currentTotal: currentTotal
-      };
 
     case MainScreenActType.ACT_LOG_OUT:
       state = initialState;

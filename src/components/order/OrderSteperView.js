@@ -2,27 +2,27 @@ import {
   Box,
   Grid,
   LinearProgress,
-  List,
   Step,
   StepButton,
   StepConnector,
   Stepper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography
 } from "@material-ui/core";
 import { lighten, withStyles } from "@material-ui/core/styles";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import CheckIcon from "@material-ui/icons/Check";
-import SecurityIcon from "@material-ui/icons/Security";
+import GavelIcon from "@material-ui/icons/Gavel";
 import PanToolIcon from "@material-ui/icons/PanTool";
+import SecurityIcon from "@material-ui/icons/Security";
 import React, { Component } from "react";
 import { compose } from "redux";
 import * as ItemStatus from "./../../constants/ItemStatus";
 import * as OrderStatus from "./../../constants/OrderStatus";
-import {
-  getCurrency,
-  getOrderType,
-  getOrderStatus
-} from "./../../utils/helpers";
+import { getOrderStatus, getOrderType } from "./../../utils/helpers";
 import {
   convertFrontEndDateTime,
   convertFrontEndDateTime2
@@ -73,13 +73,18 @@ class OrderSteperView extends Component {
     let completedStepArr = [0];
     let isDoing = 1;
 
-    if (status === OrderStatus.VALIDATE_TRUE) {
+    if (
+      status === OrderStatus.VALIDATE_TRUE ||
+      status === OrderStatus.IN_PROGRESS
+    ) {
       completedStepArr.push(1);
       isDoing = 2;
+    }
 
-      if (status === OrderStatus.DONE) {
-        completedStepArr.push(2);
-      }
+    if (status === OrderStatus.DONE) {
+      completedStepArr.push(1);
+      completedStepArr.push(2);
+      isDoing = 2;
     }
 
     this.state = {
@@ -159,30 +164,8 @@ class OrderSteperView extends Component {
     } = orderDetail;
 
     return (
-      <Grid container spacing={1}>
-        <Grid item ms={12} md={12} lg={6}>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {`Ngày bắt đầu: `}
-            <b className={classes.textContentColor}>{`${convertFrontEndDateTime(
-              startDate
-            )}`}</b>
-          </Typography>
-        </Grid>
-        <Grid item ms={12} md={12} lg={6}>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {`Ngày hoàn thành: `}
-            <b className={classes.textContentColor}>{`${convertFrontEndDateTime(
-              endDate
-            )}`}</b>
-          </Typography>
-        </Grid>
-        <Grid item ms={12} md={12} lg={6}>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {`Số ngày ước tính: `}
-            <b className={classes.textContentColor}>{`${estimateDay} ngày`}</b>
-          </Typography>
-        </Grid>
-        <Grid item ms={12} md={12} lg={6}>
+      <Grid container spacing={2}>
+        <Grid item ms={12} lg={12}>
           <Typography variant="body2" color="textSecondary" component="span">
             {`Trạng thái: `}
             <b className={classes.textContentColor}>{`${getOrderStatus(
@@ -190,29 +173,61 @@ class OrderSteperView extends Component {
             )}`}</b>
           </Typography>
         </Grid>
+        <Grid item ms={12} lg={4}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {`Ngày bắt đầu: `}
+            <b className={classes.textContentColor}>{`${convertFrontEndDateTime(
+              startDate
+            )}`}</b>
+          </Typography>
+        </Grid>
+        <Grid item ms={12} lg={4}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {`Ngày hoàn thành: `}
+            <b className={classes.textContentColor}>{`${convertFrontEndDateTime(
+              endDate
+            )}`}</b>
+          </Typography>
+        </Grid>
+        <Grid item ms={12} lg={4}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {`Số ngày ước tính: `}
+            <b className={classes.textContentColor}>{`${
+              estimateDay ? estimateDay : "N/A"
+            } ngày`}</b>
+          </Typography>
+        </Grid>
+
         <Grid item ms={12} md={2} lg={1}>
           <Typography variant="body2" color="textSecondary">
             {`Tiến độ: `}
           </Typography>
         </Grid>
         <Grid item ms={10} md={9} lg={10}>
-          <BorderLinearProgress variant="determinate" value={progress} />
+          <BorderLinearProgress
+            variant="determinate"
+            value={progress ? progress : 0}
+          />
         </Grid>
         <Grid item ms={2} md={1} lg={1}>
           <Typography variant="body2" color="textSecondary">
-            <b className={classes.textContentColor}>{`${progress}%`}</b>
+            <b className={classes.textContentColor}>{`${
+              progress ? progress : 0
+            }%`}</b>
           </Typography>
         </Grid>
-        <Grid item>
-          {items.length > 0 && (
-            <Typography variant="body2" color="textSecondary">
-              {`Danh sách đồ dùng: `}
-            </Typography>
-          )}
-        </Grid>
-        <Grid item ms={12} md={10} lg={10}>
-          <Box mt={3}>{this.renderListItem()}</Box>
-        </Grid>
+        {items.length > 0 && (
+          <React.Fragment>
+            <Grid item ms={12} lg={12}>
+              <Typography variant="body2" color="textSecondary">
+                {`Danh sách đồ dùng: `}
+              </Typography>
+            </Grid>
+            <Grid item ms={12} lg={12}>
+              <Box mr={2}>{this.renderListItem()}</Box>
+            </Grid>
+          </React.Fragment>
+        )}
       </Grid>
     );
   };
@@ -222,34 +237,30 @@ class OrderSteperView extends Component {
     let { items } = orderDetail;
 
     return (
-      <React.Fragment>
-        {items.length > 0 && (
-          <List>
+      <TableContainer>
+        <Table>
+          <TableBody>
             {items.map((item, index) => (
-              <Grid container key={index}>
-                <Grid item>
-                  <Box mr={1}>
-                    <ArrowRightIcon />
-                  </Box>
-                </Grid>
-                <Grid item ms={3} lg={3}>
-                  <Typography variant="body1">
-                    <b>{item.name}</b>
-                  </Typography>
-                </Grid>
-                <Grid item ms={7} lg={7}>
-                  <Typography variant="body1">{item.description}</Typography>
-                </Grid>
-                <Grid item ms={1} lg={1}>
-                  {item.status === ItemStatus.DONE && (
+              <TableRow key={item.id}>
+                <TableCell align="left">
+                  <b>{index + 1}</b>
+                </TableCell>
+                <TableCell align="left">
+                  <b>{item.name}</b>
+                </TableCell>
+                <TableCell align="left">{item.description}</TableCell>
+                <TableCell align="center">
+                  {item.status === ItemStatus.DONE ? (
                     <CheckIcon style={{ color: "#1b5e20" }} />
+                  ) : (
+                    <GavelIcon style={{ color: "#9e9e9e" }} />
                   )}
-                </Grid>
-              </Grid>
+                </TableCell>
+              </TableRow>
             ))}
-          </List>
-        )}
-      </React.Fragment>
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   };
 
@@ -313,7 +324,7 @@ class OrderSteperView extends Component {
 
     return (
       <Grid container spacing={1}>
-        <Grid item ms={12} md={12} lg={6}>
+        <Grid item ms={12} lg={4}>
           <Typography variant="body2" color="textSecondary" component="p">
             {`Loại đơn hàng: `}
             <b className={classes.textContentColor}>{`${getOrderType(
@@ -321,7 +332,7 @@ class OrderSteperView extends Component {
             )}`}</b>
           </Typography>
         </Grid>
-        <Grid item ms={12} md={12} lg={6}>
+        <Grid item ms={12} lg={8}>
           <Typography variant="body2" color="textSecondary" component="p">
             {`SĐT người liên hệ tại công trình: `}
             <b
@@ -329,28 +340,20 @@ class OrderSteperView extends Component {
             >{`${orderDetail.clientContact}`}</b>
           </Typography>
         </Grid>
-        <Grid item ms={12} md={12} lg={6}>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {`Số tiền khi tạo yêu cầu: `}
-            <b className={classes.textContentColor}>{`${getCurrency(
-              orderDetail.firstAmount
-            )}`}</b>
-          </Typography>
-        </Grid>
-        <Grid item ms={12} md={12} lg={6}>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {`Đỉa chỉ công trình: `}
-            <b
-              className={classes.textContentColor}
-            >{`${orderDetail.location}`}</b>
-          </Typography>
-        </Grid>
-        <Grid item ms={12} md={12} lg={12}>
+        <Grid item ms={12} lg={4}>
           <Typography variant="body2" color="textSecondary" component="p">
             {`Ngày tạo đơn hàng: `}
             <b
               className={classes.textContentColor}
             >{`${convertFrontEndDateTime2(orderDetail.createdDate)}`}</b>
+          </Typography>
+        </Grid>
+        <Grid item ms={12} lg={8}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {`Địa chỉ công trình: `}
+            <b
+              className={classes.textContentColor}
+            >{`${orderDetail.location}`}</b>
           </Typography>
         </Grid>
       </Grid>

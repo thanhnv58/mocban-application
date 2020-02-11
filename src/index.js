@@ -18,10 +18,6 @@ const rootElement = document.getElementById("root");
 const store = myCreateStore();
 
 class ViLocalizedUtils extends DateFnsUtils {
-  // getCalendarHeaderText(date) {
-  //   return format(date, "LLLL", { locale: this.locale });
-  // }
-
   getDatePickerHeaderText(date) {
     return format(date, "dd MMM", { locale: this.locale });
   }

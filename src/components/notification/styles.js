@@ -1,3 +1,5 @@
+import { green } from "@material-ui/core/colors";
+
 const styles = theme => ({
   layout: {
     width: "auto",
@@ -19,6 +21,17 @@ const styles = theme => ({
   },
   button: {
     marginRight: theme.spacing(1)
+  },
+  wrapper: {
+    position: "relative"
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
   }
 });
 

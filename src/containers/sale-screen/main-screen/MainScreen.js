@@ -4,9 +4,10 @@ import React, { Component } from "react";
 // import { connect } from "react-redux";
 import { compose } from "redux";
 import Copyright from "../../../components/Copyright";
-import Statistic from "../../../components/statistic/Statistic";
-import Notification from "./../../../components/notification/Notification";
+import CountOrderCharByMonthComponent from "../../../components/statistic/CountOrderCharByMonthComponent";
+import NotificationComponent from "./../../../components/notification/NotificationComponent";
 import styles from "./styles";
+import IncomeCharByYearComponent from "../../../components/statistic/IncomeCharByYearComponent";
 
 class MainScreen extends Component {
   render() {
@@ -14,11 +15,14 @@ class MainScreen extends Component {
       <React.Fragment>
         <CssBaseline />
         <Grid container justify="center">
-          <Grid item xs={12} lg={8}>
-            <Notification />
+          <Grid item xs={12} lg={12}>
+            <NotificationComponent />
           </Grid>
-          <Grid item xs={12} lg={8}>
-            <Statistic />
+          <Grid item xs={12} lg={12}>
+            <CountOrderCharByMonthComponent />
+          </Grid>
+          <Grid item xs={12} lg={12}>
+            <IncomeCharByYearComponent />
           </Grid>
         </Grid>
 
@@ -27,14 +31,6 @@ class MainScreen extends Component {
     );
   }
 }
-
-// const mapStateToProps = state => ({});
-
-// const mapDispatchToProps = dispatch => {
-//   return bindActionCreators({}, dispatch);
-// };
-
-// const connectRedux = connect(mapStateToProps, mapDispatchToProps);
 
 const withMyStyle = withStyles(styles);
 

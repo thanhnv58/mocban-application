@@ -41,6 +41,9 @@ const styles = theme => ({
     width: "100%",
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3)
+  },
+  container: {
+    padding: theme.spacing(3)
   }
 });
 

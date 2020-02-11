@@ -1,0 +1,1 @@
+export const VALIDATE_ORDER = "VALIDATE_ORDER";

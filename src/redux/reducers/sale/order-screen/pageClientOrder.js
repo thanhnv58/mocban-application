@@ -11,7 +11,7 @@ const initialState = {
 
 const pageClientOrder = (state = initialState, action) => {
   switch (action.type) {
-    case OrderScreenActType.ACT_SEARCH_BY_CLIENT_ID_SUCCESS:
+    case OrderScreenActType.GET_ORDER_OF_CLIENT_SUCCESS:
       let { pageOrderRes } = action;
       return {
         ...state,
@@ -21,7 +21,7 @@ const pageClientOrder = (state = initialState, action) => {
         currentTotal: pageOrderRes.elements.length,
         orders: pageOrderRes.elements
       };
-    case OrderScreenActType.ACT_SEARCH_BY_CLIENT_ID_NO_CONTENT:
+    case OrderScreenActType.GET_ORDER_OF_CLIENT_NO_CONTENT:
       return {
         ...state,
         totalElements: 0,

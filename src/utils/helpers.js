@@ -4,6 +4,9 @@ import * as OrderType from "./../constants/OrderType";
 import * as ProjectPhase from "./../constants/ProjectPhase";
 import * as ProjectStatus from "./../constants/ProjectStatus";
 import * as UserRole from "./../constants/UserRole";
+import * as NotificationType from "./../constants/NotificationType";
+import * as TransactionType from "./../constants/TransactionType";
+import * as TransactionOwner from "./../constants/TransactionOwner";
 
 export const getLocalToken = () => {
   let authObj = JSON.parse(localStorage.getItem("MB_AUTH"));
@@ -67,7 +70,7 @@ export const getPhase = phase => {
     case ProjectPhase.DONE:
       return "ĐÃ HOÀN THÀNH";
     default:
-      return "KHÔNG XÁC ĐỊNH";
+      return "N/A";
   }
 };
 
@@ -82,71 +85,150 @@ export const getStatus = status => {
     case ProjectStatus.RESOLVE:
       return "ĐÃ LÀM XONG";
     default:
-      return "KHÔNG XÁC ĐỊNH";
+      return "N/A";
   }
 };
 
 export const getUserRole = role => {
   switch (role) {
     case UserRole.CLIENT:
-      return "KHÁCH HÀNG";
+      return "Khách hàng";
     case UserRole.DESIGN:
-      return "THIẾT KẾ";
+      return "Thiết kế";
     case UserRole.DESIGN_LEADER:
-      return "THIẾT KẾ TRƯỞNG";
+      return "Trưởng thiết kế";
     case UserRole.SALE:
-      return "NHÂN VIÊN BÁN HÀNG";
+      return "NV bán hàng";
     case UserRole.PRODUCER:
-      return "THỢ MỘC";
+      return "Thợ mộc";
     case UserRole.PRODUCER_LEADER:
-      return "THỢ CẢ";
+      return "Trưởng thợ mộc";
     case UserRole.MANAGER:
-      return "AE";
+      return "Quản lý";
+    case UserRole.ACCOUNTANT:
+      return "Kế toán";
     default:
-      return "KHÔNG XÁC ĐỊNH";
+      return "N/A";
   }
 };
 
 export const getOrderType = type => {
   switch (type) {
     case OrderType.DESIGN:
-      return "ĐƠN HÀNG THIẾT KẾ";
+      return "ĐH - THIẾT KẾ";
     case OrderType.PRODUCTION:
-      return "ĐƠN HÀNG SẢN XUẤT";
+      return "ĐH - SẢN XUẤT";
     default:
-      return "KHÔNG XÁC ĐỊNH";
+      return "N/A";
+  }
+};
+
+export const getTransactionOwner = type => {
+  switch (type) {
+    case TransactionOwner.ALL:
+      return "Tất cả";
+    case TransactionOwner.CLIENT:
+      return "Của khách hàng";
+    case TransactionOwner.COMPANY:
+      return "Của công ty";
+    default:
+      return "N/A";
   }
 };
 
 export const getOrderStatus = status => {
   switch (status) {
     case OrderStatus.NOT_VALIDATE:
-      return "CHUYỂN TỚI KẾ TOÁN";
-    case OrderStatus.VALIDATE_FALSE:
-      return "XÁC THỰC - FALSE";
+      return "Tới Kế Toán";
     case OrderStatus.VALIDATE_TRUE:
-      return "CHUYỂN TỚI KỸ THUẬT";
+      return "Tới kỹ thuật";
     case OrderStatus.IN_PROGRESS:
-      return "ĐANG LÀM";
+      return "Đang làm";
     case OrderStatus.DONE:
-      return "HOÀN THÀNH";
+      return "Hoàn Thành";
     default:
-      return "KHÔNG XÁC ĐỊNH";
+      return "N/A";
   }
 };
 
 export const getStatusColor = status => {
   switch (status) {
     case OrderStatus.NOT_VALIDATE:
-      return "#546e7a";
-    case OrderStatus.VALIDATE_FALSE:
-      return "red";
+      return "#9e9e9e";
     case OrderStatus.VALIDATE_TRUE:
       return "#f57f17";
     case OrderStatus.IN_PROGRESS:
       return "#0277bd";
     case OrderStatus.DONE:
       return "green";
+    default:
+      return "black";
+  }
+};
+
+export const getTaskStatus = status => {
+  switch (status) {
+    case OrderStatus.VALIDATE_TRUE:
+      return "Chưa làm";
+    case OrderStatus.IN_PROGRESS:
+      return "Đang làm";
+    case OrderStatus.DONE:
+      return "Hoàn Thành";
+    default:
+      return "N/A";
+  }
+};
+
+export const getTaskColor = status => {
+  switch (status) {
+    case OrderStatus.VALIDATE_TRUE:
+      return "#757575";
+    case OrderStatus.IN_PROGRESS:
+      return "#0277bd";
+    case OrderStatus.DONE:
+      return "green";
+    default:
+      return "black";
+  }
+};
+
+export const getNotificationType = type => {
+  switch (type) {
+    case NotificationType.VALIDATE_ORDER:
+      return "XÁC THỰC ĐƠN HÀNG";
+    default:
+      return "N/A";
+  }
+};
+
+export const getTransactionType = type => {
+  switch (type) {
+    case TransactionType.INCOME:
+      return "THU";
+    case TransactionType.PAY:
+      return "CHI";
+    default:
+      return "N/A";
+  }
+};
+
+export const getTransactionTypeColor = type => {
+  switch (type) {
+    case TransactionType.INCOME:
+      return "green";
+    case TransactionType.PAY:
+      return "red";
+    default:
+      return "black";
+  }
+};
+
+export const getTransactionOwnerColor = type => {
+  switch (type) {
+    case TransactionOwner.CLIENT:
+      return "green";
+    case TransactionOwner.COMPANY:
+      return "blue";
     default:
       return "black";
   }
@@ -164,7 +246,7 @@ export const getCurrency = amount => {
 };
 
 export const getCurrencyValue = amount => {
-  if (!amount) return "Không xác định";
+  if (!amount) return "N/A";
 
   const cleanedInput = amount.replace(/\./g, "");
 

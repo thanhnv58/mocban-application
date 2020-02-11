@@ -8,7 +8,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  InputAdornment
+  InputAdornment,
+  TableContainer,
+  Paper
 } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -196,45 +198,49 @@ class CreateOrderForm extends Component {
 
         {arrItems.length > 0 && (
           <Box m={1}>
-            <Table className={classes.table} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="left">STT</StyledTableCell>
-                  <StyledTableCell align="left">Tên</StyledTableCell>
-                  <StyledTableCell align="left">Mô tả</StyledTableCell>
-                  <StyledTableCell align="right">Hành động</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {arrItems.map((item, i) => (
-                  <StyledTableRow key={item.id}>
-                    <StyledTableCell component="th" scope="row" align="left">
-                      <b>{i + 1}</b>
-                    </StyledTableCell>
-                    <StyledTableCell align="left">{item.name}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.description}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Button
-                        size="small"
-                        color="primary"
-                        variant="contained"
-                        onClick={() => {
-                          this.onRemoveItem(item);
-                        }}
-                        startIcon={<DeleteIcon />}
-                        style={{
-                          backgroundColor: "#f44336"
-                        }}
-                      >
-                        Xóa
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="left">STT</StyledTableCell>
+                    <StyledTableCell align="center">Tên</StyledTableCell>
+                    <StyledTableCell align="center">Mô tả</StyledTableCell>
+                    <StyledTableCell align="center">Hành động</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {arrItems.map((item, i) => (
+                    <StyledTableRow key={item.id}>
+                      <StyledTableCell component="th" scope="row" align="left">
+                        <b>{i + 1}</b>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {item.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {item.description}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          size="small"
+                          color="primary"
+                          variant="contained"
+                          onClick={() => {
+                            this.onRemoveItem(item);
+                          }}
+                          startIcon={<DeleteIcon />}
+                          style={{
+                            backgroundColor: "#f44336"
+                          }}
+                        >
+                          Xóa
+                        </Button>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Box>
         )}
       </React.Fragment>

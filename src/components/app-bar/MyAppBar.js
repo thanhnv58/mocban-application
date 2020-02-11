@@ -186,7 +186,16 @@ class MyAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+        <NavLink
+          to="/login"
+          style={{ textDecoration: "none", color: "black" }}
+          activeStyle={{
+            fontWeight: "bold",
+            color: "#03a9f4"
+          }}
+        >
+          <MenuItem onClick={this.handleMenuClose}>Home</MenuItem>
+        </NavLink>
 
         <NavLink
           to="/logout"

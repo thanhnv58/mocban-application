@@ -8,6 +8,14 @@ export const parseDateTime = date => {
   return null;
 };
 
+export const parseDateTime2 = date => {
+  if (date) {
+    return moment(date).format("YYYY-MM-DD");
+  }
+
+  return null;
+};
+
 export const estimateDateTime = (startDate, estimateDay) => {
   if (startDate) {
     return moment(startDate)
@@ -20,23 +28,23 @@ export const estimateDateTime = (startDate, estimateDay) => {
 
 export const convertFrontEndDateTime = date => {
   if (date) {
-    return moment(date).format("DD/MM/YYYY");
+    return moment(date).format("DD-MM-YYYY");
   }
 
-  return "Chưa xác định";
+  return "N/A";
 };
 
 export const convertFrontEndDateTime2 = date => {
   if (date) {
-    return moment(date).format("DD/MM/YYYY HH:mm");
+    return moment(date).format("HH:mm DD-MM-YYYY");
   }
 
-  return "Chưa xác định";
+  return "N/A";
 };
 
 export const findNumberOfUsingDay = (startDate, endDate) => {
   if (!startDate) {
-    return "Chưa xác định";
+    return "N/A";
   }
 
   let tempStartDate = moment(startDate);

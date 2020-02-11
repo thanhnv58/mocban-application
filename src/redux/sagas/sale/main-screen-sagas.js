@@ -4,13 +4,11 @@ import * as statisticApis from "./../../../utils/api/statisticApis";
 // import * as toastUtils from "./../../../utils/toastUtils";
 
 function* getStatisticOfMonth(action) {
-  let { month } = action;
-
-  let d = new Date();
+  let { month, year } = action;
 
   const response = yield call(
     statisticApis.getStatisOfMonthOfUserLogin,
-    d.getFullYear(),
+    year,
     month
   );
 

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import { logout } from "./../../actions/auth-action/actions";
+// import "./onesignal-delete.js";
 
 class LogoutScreen extends Component {
   componentDidMount() {
@@ -16,7 +17,7 @@ class LogoutScreen extends Component {
     let { isAuthenticated } = auth;
 
     if (isAuthenticated) {
-      return null;
+      return <React.Fragment></React.Fragment>;
     }
 
     if (isAuthenticated === null) {

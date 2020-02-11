@@ -11,6 +11,18 @@ const orderDetail = (state = initialState, action) => {
       return {
         ...state
       };
+    case OrderScreenActType.UPDATE_CLIENT_REQUEST_SUCCESS:
+      let { updateClientRequestRes } = action;
+
+      if (state.id === updateClientRequestRes.orderId) {
+        return {
+          ...state,
+          note: updateClientRequestRes.clientRequest
+        };
+      } else {
+        return state === null ? null : { ...state };
+      }
+
     case MainScreenActType.ACT_LOG_OUT:
       state = initialState;
       return state;

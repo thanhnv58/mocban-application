@@ -5,7 +5,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  TableContainer
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -19,7 +20,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
-import { fetchListClient } from "./../../../actions/sale/client-screen-action/actions";
+import {
+  fetchListClient,
+  loadMoreClient
+} from "./../../../actions/sale/client-screen-action/actions";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import Copyright from "./../../../components/Copyright";
 import * as stringUtils from "./../../../utils/stringUtils";
 import styles from "./styles";
@@ -43,34 +48,12 @@ class ListClientScreen extends Component {
   }
 
   render() {
-    let { pageClient, isLoading1 } = this.props;
-    let { currentPage, clients, totalPage } = pageClient;
-
-    // Show loading...
-    if (isLoading1) {
-      return (
-        <Box display="flex" justifyContent="center" mt={3}>
-          <CircularProgress />
-        </Box>
-      );
-    }
-
-    // Show no content
-    if (currentPage === 0 && totalPage === 0) {
-      return (
-        <Typography variant="h6" gutterBottom>
-          Danh sách người dùng rỗng!
-        </Typography>
-      );
-    }
-
-    if (!clients || clients.length <= 0) {
-      return null;
-    }
-
     return (
       <React.Fragment>
-        <Box mt={3} mb={4}>
+        <Typography variant="h6" align="left">
+          <b>Danh sách khách hàng</b>
+        </Typography>
+        <Box mt={3} mb={4} ml={2} mr={2}>
           {this.renderListUser()}
         </Box>
         <Copyright />
@@ -78,43 +61,15 @@ class ListClientScreen extends Component {
     );
   }
 
-  renderLoadMore = () => {
-    let { pageClient, classes, isLoadMoreUser } = this.props;
-    let { totalPage, currentPage } = pageClient;
-
-    let xhtml = null;
-    if (currentPage !== -1 && currentPage < totalPage - 1) {
-      xhtml = (
-        <Box display="flex" justifyContent="center">
-          <div className={classes.wrapper}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.loadMoreUser}
-              disabled={isLoadMoreUser}
-            >
-              Load more
-            </Button>
-            {isLoadMoreUser && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
-        </Box>
-      );
-    }
-
-    return xhtml;
-  };
-
-  loadMoreUser = () => {
-    let { fetchUser, pageClient } = this.props;
-    fetchUser(pageClient.currentPage + 1);
-  };
-
   renderListUser = () => {
-    let { pageClient, classes } = this.props;
-    let { clients } = pageClient;
-    let { currentTotal } = pageClient;
+    let { pageClient, classes, isLoading1, isLoading2 } = this.props;
+    let {
+      clients,
+      currentTotal,
+      totalElements,
+      currentPage,
+      totalPage
+    } = pageClient;
     let { filterText } = this.state;
 
     let tempFilterText = filterText
@@ -142,113 +97,147 @@ class ListClientScreen extends Component {
 
     // Show list client
     let xhtml = (
-      <Box display="flex" justifyContent="center">
-        <Paper>
-          <Table className={classes.table} aria-label="customized table">
-            <TableHead>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">STT</StyledTableCell>
+              <StyledTableCell align="left">
+                Mã khách hàng ({`${currentTotal}/${totalElements}`})
+              </StyledTableCell>
+              <StyledTableCell align="center">Họ tên</StyledTableCell>
+              <StyledTableCell align="left">Số điện thoại</StyledTableCell>
+              <StyledTableCell align="center">Email</StyledTableCell>
+              <StyledTableCell align="center">Địa chỉ</StyledTableCell>
+              <StyledTableCell align="center" colSpan={2}>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Bộ lọc"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput
+                    }}
+                    type="search"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={this.addFilter}
+                  />
+                </div>
+              </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {isLoading1 && (
               <TableRow>
-                <StyledTableCell align="center">STT</StyledTableCell>
-                <StyledTableCell align="left">
-                  Mã khách hàng ({`${currentTotal}`} người)
+                <TableCell align="center" colSpan={9}>
+                  <Box display="flex" justifyContent="center" mt={3} mb={3}>
+                    <CircularProgress />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
+            {isLoading1 === false && listFiltedClients.length === 0 && (
+              <StyledTableRow key="1">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  align="center"
+                  colSpan={9}
+                >
+                  <Typography variant="body1" gutterBottom>
+                    Danh sách khách hàng rỗng!
+                  </Typography>
                 </StyledTableCell>
-                <StyledTableCell align="center">Họ tên</StyledTableCell>
-                <StyledTableCell align="left">Số điện thoại</StyledTableCell>
-                <StyledTableCell align="center">Email</StyledTableCell>
-                <StyledTableCell align="center">Địa chỉ</StyledTableCell>
-                <StyledTableCell align="center" colSpan={2}>
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      placeholder="Bộ lọc"
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput
-                      }}
-                      inputProps={{ "aria-label": "search" }}
-                      onChange={this.addFilter}
-                    />
+              </StyledTableRow>
+            )}
+
+            {listFiltedClients.map((client, i) => (
+              <StyledTableRow key={client.username}>
+                <StyledTableCell align="center">
+                  <b>{i + 1}</b>
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  <b>{client.username}</b>
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {client.fullName}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {client.phoneNumber}
+                </StyledTableCell>
+                <StyledTableCell align="left">{client.email}</StyledTableCell>
+                <StyledTableCell align="left">{client.address}</StyledTableCell>
+                <StyledTableCell align="left">
+                  <NavLink
+                    to={`/sale/list-order/${client.username}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<DragIndicatorIcon />}
+                    >
+                      Đơn hàng của khách
+                    </Button>
+                  </NavLink>
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  <NavLink
+                    to={`/sale/create-order?clientId=${client.username}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<LocalPharmacyIcon />}
+                      style={{ backgroundColor: "#ff5722" }}
+                    >
+                      Tạo Orders
+                    </Button>
+                  </NavLink>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+            {isLoading1 === false && currentPage < totalPage - 1 && (
+              <TableRow>
+                <StyledTableCell align="center" colSpan={9}>
+                  <div className={classes.wrapper}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      disabled={isLoading2}
+                      startIcon={<CloudDownloadIcon />}
+                      onClick={this.loadMore}
+                    >
+                      Tải thêm
+                    </Button>
+                    {isLoading2 && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
                   </div>
                 </StyledTableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {listFiltedClients.length === 0 && (
-                <StyledTableRow key="1">
-                  <StyledTableCell
-                    component="th"
-                    scope="row"
-                    align="center"
-                    colSpan={8}
-                  >
-                    <Typography variant="body1" gutterBottom>
-                      No clients to display
-                    </Typography>
-                  </StyledTableCell>
-                </StyledTableRow>
-              )}
-              {listFiltedClients.map((client, i) => (
-                <StyledTableRow key={client.username}>
-                  <StyledTableCell align="center">
-                    <b>{i + 1}</b>
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    <b>{client.username}</b>
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {client.fullName}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {client.phoneNumber}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{client.email}</StyledTableCell>
-                  <StyledTableCell align="left">
-                    {client.address}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    <NavLink
-                      to={`/sale/orders/search?clientId=${client.username}`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<DragIndicatorIcon />}
-                      >
-                        Đơn hàng của khách
-                      </Button>
-                    </NavLink>
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    <NavLink
-                      to={`/sale/orders/create?clientId=${client.username}`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<LocalPharmacyIcon />}
-                        style={{ backgroundColor: "#ff5722" }}
-                      >
-                        Tạo Orders
-                      </Button>
-                    </NavLink>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      </Box>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
 
     return xhtml;
   };
 
+  loadMore = () => {
+    let { loadMoreClient } = this.props;
+    loadMoreClient();
+  };
+
   addFilter = e => {
     let { value } = e.target;
-
     let filterText = value ? value : null;
 
     this.setState({
@@ -259,13 +248,15 @@ class ListClientScreen extends Component {
 
 const mapStateToProps = state => ({
   pageClient: state.saleReducer.pageClient,
-  isLoading1: state.saleReducer.ui.isLoading1
+  isLoading1: state.saleReducer.ui.isLoading1,
+  isLoading2: state.saleReducer.ui.isLoading2
 });
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      fetchListClient
+      fetchListClient,
+      loadMoreClient
     },
     dispatch
   );

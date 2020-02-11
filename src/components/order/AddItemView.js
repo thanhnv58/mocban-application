@@ -45,12 +45,7 @@ class AddItemView extends Component {
           />
         </Grid>
         <Grid item xs={12} md={1}>
-          <Button
-            size="small"
-            color="primary"
-            variant="contained"
-            onClick={this.onAddItem}
-          >
+          <Button color="primary" variant="contained" onClick={this.onAddItem}>
             Thêm
           </Button>
         </Grid>

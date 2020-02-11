@@ -61,6 +61,18 @@ const ui = (state = initialState, action) => {
         isLoading1: false
       };
 
+    case ClientScreenActionType.ACT_LOAD_MORE_CLIENT:
+      return {
+        ...state,
+        isLoading2: true
+      };
+    case ClientScreenActionType.ACT_LOAD_MORE_CLIENT_FAILED:
+    case ClientScreenActionType.ACT_LOAD_MORE_CLIENT_SUCCESS:
+      return {
+        ...state,
+        isLoading2: false
+      };
+
     case OrderScreenActionType.ACT_CREATE_ORDER:
       return {
         ...state,
@@ -82,14 +94,14 @@ const ui = (state = initialState, action) => {
         needConfirm1: false
       };
 
-    case OrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID:
+    case OrderScreenActionType.GET_ORDER_OF_CLIENT:
       return {
         ...state,
         isLoading1: true
       };
-    case OrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID_FAILED:
-    case OrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID_NO_CONTENT:
-    case OrderScreenActionType.ACT_SEARCH_BY_CLIENT_ID_SUCCESS:
+    case OrderScreenActionType.GET_ORDER_OF_CLIENT_FAILED:
+    case OrderScreenActionType.GET_ORDER_OF_CLIENT_NO_CONTENT:
+    case OrderScreenActionType.GET_ORDER_OF_CLIENT_SUCCESS:
       return {
         ...state,
         isLoading1: false
@@ -108,16 +120,28 @@ const ui = (state = initialState, action) => {
         isLoading1: false
       };
 
-    case OrderScreenActionType.ACT_GET_ORDER_DETAIL:
+    case OrderScreenActionType.LOAD_MORE_LIST_ORDER:
       return {
         ...state,
         isLoading2: true
+      };
+    case OrderScreenActionType.LOAD_MORE_LIST_ORDER_FAILED:
+    case OrderScreenActionType.LOAD_MORE_LIST_ORDER_SUCCESS:
+      return {
+        ...state,
+        isLoading2: false
+      };
+
+    case OrderScreenActionType.ACT_GET_ORDER_DETAIL:
+      return {
+        ...state,
+        isLoading1: true
       };
     case OrderScreenActionType.ACT_GET_ORDER_DETAIL_FAILED:
     case OrderScreenActionType.ACT_GET_ORDER_DETAIL_SUCCESS:
       return {
         ...state,
-        isLoading2: false
+        isLoading1: false
       };
 
     case OrderScreenActionType.GET_TRANSACTION_INCOME_OF_ORDER:
@@ -136,14 +160,27 @@ const ui = (state = initialState, action) => {
     case OrderScreenActionType.ACT_DO_TRANSACTION:
       return {
         ...state,
-        isLoading4: true
+        isLoading2: true
       };
     case OrderScreenActionType.ACT_DO_TRANSACTION_FAILED:
     case OrderScreenActionType.ACT_DO_TRANSACTION_SUCCESS:
       return {
         ...state,
+        isLoading2: false
+      };
+
+    case OrderScreenActionType.UPDATE_CLIENT_REQUEST:
+      return {
+        ...state,
+        isLoading4: true
+      };
+    case OrderScreenActionType.UPDATE_CLIENT_REQUEST_FAILED:
+    case OrderScreenActionType.UPDATE_CLIENT_REQUEST_SUCCESS:
+      return {
+        ...state,
         isLoading4: false
       };
+
     default:
       return { ...state };
   }

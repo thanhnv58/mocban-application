@@ -12,3 +12,15 @@ export const getStatisOfYearOfUserLogin = year => {
 
   return apiClient.callApiGet(url, null, null, null);
 };
+
+export const getInOutAmountOfYear = year => {
+  const url = `${BASE_URL}/api/v1/get-in-out-amount/${year}`;
+
+  return apiClient.callApiGet(url, null, null, null);
+};
+
+export const getNewClientOfYear = year => {
+  const url = `${BASE_URL}/api/v1/get-new-client/${year}`;
+
+  return apiClient.callApiGet(url, null, null, null);
+};

@@ -1,12 +1,24 @@
 import * as apiClient from "./apiClient";
 import { BASE_URL } from "./../../configs/serviceConfig";
 
-const PAGE_SIZE = 60;
+const PAGE_SIZE = 10;
 
 export const createUser = user => {
   const url = `${BASE_URL}/api/v1/create-user`;
 
   return apiClient.callApiPost(url, user, null, null);
+};
+
+export const updateUser = user => {
+  const url = `${BASE_URL}/api/v1/update-user`;
+
+  return apiClient.callApiPost(url, user, null, null);
+};
+
+export const getPassword = requestDto => {
+  const url = `${BASE_URL}/api/v1/get-password`;
+
+  return apiClient.callApiPost(url, requestDto, null, null);
 };
 
 export const getAllUser = (pageIndex, role) => {
