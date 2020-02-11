@@ -24,7 +24,7 @@ class LoginForm extends Component {
     super(props);
 
     this.state = {
-      notPassCaptcha: true
+      notPassCaptcha: false
     };
   }
 
