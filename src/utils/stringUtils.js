@@ -20,5 +20,5 @@ export const removeAccents = str => {
     var char = AccentsMap[i][0];
     str = str.replace(re, char);
   }
-  return str;
+  return str.trim();
 };

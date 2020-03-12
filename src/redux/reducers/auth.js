@@ -5,6 +5,7 @@ import { getLocalToken } from "./../../utils/helpers";
 const initialState = {
   isLogin: false,
   isValidateToken: false,
+  isChangePassword: false,
   isAuthenticated: null,
   token: null,
   expiredTime: null,
@@ -67,6 +68,17 @@ const auth = (state = initialState, action) => {
         expiredTime,
         role,
         username
+      };
+    case AuthActTypes.CHANGE_PASSWORD:
+      return {
+        ...state,
+        isChangePassword: true
+      };
+    case AuthActTypes.CHANGE_PASSWORD_FAILED:
+    case AuthActTypes.CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isChangePassword: false
       };
     case AuthActTypes.ACT_LOG_OUT:
       state = initialState;

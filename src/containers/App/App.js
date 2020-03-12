@@ -15,6 +15,7 @@ import SaleScreen from "./../sale-screen/SaleScreen";
 import styles from "./styles";
 import TechnicianScreen from "../technician-screen/TechnicianScreen";
 import ManagerScreen from "../manager-screen/ManagerScreen";
+import ChangePasswordScreen from "../login-screen/ChangePasswordScreen";
 
 class App extends Component {
   componentDidMount() {
@@ -105,6 +106,10 @@ const routes = [
   {
     path: "/logout",
     component: () => <LogoutScreen />
+  },
+  {
+    path: "/change-password",
+    component: () => <ChangePasswordScreen />
   },
   {
     path: "/dashboard",

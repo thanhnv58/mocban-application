@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import * as AuthActType from "./../../actions/auth-action/types";
 import * as authApis from "./../../utils/api/authApis";
 import { saveAuthToStorage } from "./../../utils/helpers";
+import { toastSuccess } from "../../utils/toastUtils";
 
 function* authenticate(action) {
   let { username, password } = action;
@@ -44,7 +45,26 @@ function* validateToken(action) {
   });
 }
 
+function* changePassword(action) {
+  let { requestDto } = action;
+  const response = yield call(authApis.changePassword, requestDto);
+
+  if (response === null) {
+    yield put({
+      type: AuthActType.CHANGE_PASSWORD_FAILED
+    });
+    return;
+  }
+
+  // Case SUCCESS
+  toastSuccess("Đổi mật khẩu thành công!");
+  yield put({
+    type: AuthActType.CHANGE_PASSWORD_SUCCESS
+  });
+}
+
 export const authSagas = [
   takeEvery(AuthActType.ACT_AUTHENTICATE, authenticate),
-  takeEvery(AuthActType.VALIDATE_TOKEN, validateToken)
+  takeEvery(AuthActType.VALIDATE_TOKEN, validateToken),
+  takeEvery(AuthActType.CHANGE_PASSWORD, changePassword)
 ];

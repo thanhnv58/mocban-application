@@ -194,7 +194,18 @@ class MyAppBar extends Component {
             color: "#03a9f4"
           }}
         >
-          <MenuItem onClick={this.handleMenuClose}>Home</MenuItem>
+          <MenuItem onClick={this.handleMenuClose}>Trang chủ</MenuItem>
+        </NavLink>
+
+        <NavLink
+          to="/change-password"
+          style={{ textDecoration: "none", color: "black" }}
+          activeStyle={{
+            fontWeight: "bold",
+            color: "#03a9f4"
+          }}
+        >
+          <MenuItem onClick={this.handleMenuClose}>Đổi mật khẩu</MenuItem>
         </NavLink>
 
         <NavLink

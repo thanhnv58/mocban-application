@@ -39,7 +39,8 @@ const styles = theme => ({
     padding: theme.spacing(5)
   },
   table: {
-    width: "100%"
+    width: "100%",
+    minWidth: 1300
   },
   search: {
     position: "relative",

@@ -159,6 +159,12 @@ class ListOrderScreen extends Component {
               .includes(tempFilterText) ||
             stringUtils
               .removeAccents(order.client.username.toLocaleLowerCase())
+              .includes(tempFilterText) ||
+            stringUtils
+              .removeAccents(getOrderStatus(order.status).toLocaleLowerCase())
+              .includes(tempFilterText) ||
+            stringUtils
+              .removeAccents(getOrderType(order.orderType).toLocaleLowerCase())
               .includes(tempFilterText)
           );
         });

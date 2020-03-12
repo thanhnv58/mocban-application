@@ -188,7 +188,7 @@ class ListClientScreen extends Component {
                       color="primary"
                       startIcon={<DragIndicatorIcon />}
                     >
-                      DS giao dịch
+                      Giao dịch
                     </Button>
                   </NavLink>
                 </StyledTableCell>
@@ -203,7 +203,7 @@ class ListClientScreen extends Component {
                       startIcon={<AttachMoneyIcon />}
                       style={{ backgroundColor: "#ff5722" }}
                     >
-                      Tạo giao dịch
+                      Tạo GD
                     </Button>
                   </NavLink>
                 </StyledTableCell>

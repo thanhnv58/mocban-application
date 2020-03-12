@@ -16,7 +16,7 @@ import styles from "./styles";
 
 const listMenu1 = [
   {
-    title: "Home",
+    title: "Trang chủ",
     icon: <HomeIcon />,
     isLink: true,
     path: "/technician/home"
@@ -38,7 +38,7 @@ const listMenu1 = [
 
 const listMenu2 = [
   {
-    title: "Log out",
+    title: "Đăng xuất",
     icon: <ExitToAppIcon />,
     isLink: true,
     path: "/logout"

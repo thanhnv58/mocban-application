@@ -93,6 +93,9 @@ class ListUserScreen extends Component {
               .includes(tempFilterText) ||
             stringUtils
               .removeAccents(user.address.toLocaleLowerCase())
+              .includes(tempFilterText) ||
+            stringUtils
+              .removeAccents(getUserRole(user.role).toLocaleLowerCase())
               .includes(tempFilterText)
           );
         });

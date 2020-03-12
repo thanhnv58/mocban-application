@@ -17,3 +17,9 @@ export const validateToken = () => {
 
   return apiClient.callApiGet(url, null, null);
 };
+
+export const changePassword = requestDto => {
+  const url = `${BASE_URL}/api/v1/change-password`;
+
+  return apiClient.callApiPost(url, requestDto);
+};

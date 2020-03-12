@@ -225,7 +225,7 @@ class ValidateTransactionScreen extends Component {
                   <b>{getCurrency(totalAmount)}</b>
                 </StyledTableCell>
                 {currentPage < totalPage - 1 && (
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" colSpan={3}>
                     <div className={classes.wrapper}>
                       <Button
                         color="primary"
