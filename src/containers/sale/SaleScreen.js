@@ -8,15 +8,14 @@ import { bindActionCreators, compose } from "redux";
 import MyAppBar from "../../components/app-bar/MyAppBar";
 import MyDrawerSale from "../../components/drawer/MyDrawerSale";
 import * as UserRole from "./../../constants/UserRole";
-import { hasPermission, getLocalToken } from "./../../utils/helpers";
-import CreateClientScreen from "./../sale-screen/client-screen/CreateClientScreen";
-import ListClientScreen from "./../sale-screen/client-screen/ListClientScreen";
+import { helpers_hasPermission } from "./../../utils/helpers";
+import CreateClientScreen from "./../sale/client-screen/CreateClientScreen";
+import ListClientScreen from "./../sale/client-screen/ListClientScreen";
 import MainScreen from "./main-screen/MainScreen";
 import CreateOrderScreen from "./order-screen/CreateOrderScreen";
 import ListOrderScreen from "./order-screen/ListOrderScreen";
 import styles from "./styles";
 import OrderDetailScreen from "./order-screen/OrderDetailScreen";
-// import "./onesignal-sale.js";
 
 class SaleScreen extends Component {
   constructor(props) {
@@ -33,11 +32,11 @@ class SaleScreen extends Component {
   };
 
   render() {
-    let { auth, classes } = this.props;
-    let { isAuthenticated, role } = auth;
+    let { isAuthenticated } = this.props;
 
-    let localToken = getLocalToken();
-    if (localToken === null || isAuthenticated === false) {
+    // Get token save on local storage
+    // Case not yet authentication
+    if (!isAuthenticated) {
       return (
         <Redirect
           to={{
@@ -45,17 +44,37 @@ class SaleScreen extends Component {
           }}
         />
       );
-    }
+    } else {
+      let { listRole, classes } = this.props;
 
-    // Main screen
-    if (isAuthenticated === true) {
-      if (
-        !hasPermission(role, [
-          UserRole.SALE,
-          UserRole.ADMIN_SYSTEM,
-          UserRole.MANAGER
-        ])
-      ) {
+      if (helpers_hasPermission(UserRole.SALE, listRole)) {
+        return (
+          <div className={classes.root}>
+            <CssBaseline />
+            <MyAppBar handleDrawerToggle={this.handleDrawerToggle} />
+            <MyDrawerSale
+              mobileOpen={this.state.mobileOpen}
+              handleDrawerToggle={this.handleDrawerToggle}
+            />
+
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
+              <Switch>
+                {routes.map((route, i) => {
+                  return (
+                    <Route
+                      key={i}
+                      path={route.path}
+                      render={route.render}
+                      exact={route.exact ? route.exact : false}
+                    />
+                  );
+                })}
+              </Switch>
+            </main>
+          </div>
+        );
+      } else {
         return (
           <Redirect
             to={{
@@ -64,41 +83,13 @@ class SaleScreen extends Component {
           />
         );
       }
-
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          <MyAppBar handleDrawerToggle={this.handleDrawerToggle} />
-          <MyDrawerSale
-            mobileOpen={this.state.mobileOpen}
-            handleDrawerToggle={this.handleDrawerToggle}
-          />
-
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Switch>
-              {routes.map((route, i) => {
-                return (
-                  <Route
-                    key={i}
-                    path={route.path}
-                    render={route.render}
-                    exact={route.exact ? route.exact : false}
-                  />
-                );
-              })}
-            </Switch>
-          </main>
-        </div>
-      );
     }
-
-    return null;
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  isAuthenticated: state.commonUser.isAuthenticated,
+  listRole: state.commonUser.listRole
 });
 
 const mapDispatchToProps = dispatch => {

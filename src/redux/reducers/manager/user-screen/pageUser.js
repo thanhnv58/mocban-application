@@ -1,5 +1,5 @@
 import * as UserScreenActType from "../../../../actions/manager/user-screen-action/types";
-import * as MainScreenActType from "../../../../actions/auth-action/types";
+import * as MainScreenActType from "../../../../actions/common-user-action/types";
 import { findIndexOfElementInArray } from "../../../../utils/arrayUtils";
 
 const initialState = {

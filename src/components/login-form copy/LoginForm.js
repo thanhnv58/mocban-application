@@ -11,7 +11,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import { Field, reduxForm } from "redux-form";
-import { authenticate } from "../../actions/auth-action/actions";
+import { authenticate } from "../../actions/common-user-action/actions";
 import Copyright from "../Copyright";
 import * as mui from "../../utils/mui";
 // import ReCAPTCHA from "react-google-recaptcha";
@@ -136,7 +136,7 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLogin: state.auth.isLogin
+  isLogin: state.commonUser.isLogin
 });
 
 const mapDispatchToProps = dispatch => {

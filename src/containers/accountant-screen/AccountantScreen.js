@@ -6,7 +6,10 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import MyAppBar from "../../components/app-bar/MyAppBar";
 import * as UserRole from "../../constants/UserRole";
-import { hasPermission, getLocalToken } from "../../utils/helpers";
+import {
+  helpers_hasPermission,
+  helpers_GetLocalToken
+} from "../../utils/helpers";
 import styles from "./styles";
 import MyDrawerAccountant from "../../components/drawer/MyDrawerAccountant";
 import MainScreen from "./main-screen/MainScreen";
@@ -36,7 +39,7 @@ class AccountantScreen extends Component {
     let { auth, classes } = this.props;
     let { isAuthenticated, role } = auth;
 
-    let localToken = getLocalToken();
+    let localToken = helpers_GetLocalToken();
     if (localToken === null || isAuthenticated === false) {
       return (
         <Redirect
@@ -50,7 +53,7 @@ class AccountantScreen extends Component {
     // Main screen
     if (isAuthenticated === true) {
       if (
-        !hasPermission(role, [
+        !helpers_hasPermission(role, [
           UserRole.ACCOUNTANT,
           UserRole.ADMIN_SYSTEM,
           UserRole.MANAGER
@@ -98,7 +101,7 @@ class AccountantScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.commonUser
 });
 
 const mapDispatchToProps = dispatch => {

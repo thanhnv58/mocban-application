@@ -14,7 +14,7 @@ import { Field, reduxForm } from "redux-form";
 import * as mui from "../../utils/mui";
 import styles from "./styles";
 import { TextField } from "@material-ui/core";
-import { changePassword } from "../../actions/auth-action/actions";
+import { changePassword } from "../../actions/common-user-action/actions";
 
 class ChangePasswordForm extends Component {
   render() {
@@ -109,7 +109,7 @@ class ChangePasswordForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  isChangePassword: state.auth.isChangePassword
+  isChangePassword: state.commonUser.isChangePassword
 });
 
 const mapDispatchToProps = dispatch => {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect, NavLink } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
-import { getLocalToken } from "./../../utils/helpers";
+import { helpers_GetLocalToken } from "../../utils/helpers";
 import ChangePasswordForm from "../../components/change-password-form/ChangePasswordForm";
 import { Link, Box } from "@material-ui/core";
 import Copyright from "../../components/Copyright";
@@ -12,7 +12,7 @@ class ChangePasswordScreen extends Component {
     let { auth } = this.props;
     let { isAuthenticated } = auth;
 
-    let localToken = getLocalToken();
+    let localToken = helpers_GetLocalToken();
     if (localToken === null || isAuthenticated === false) {
       return (
         <Redirect
@@ -55,7 +55,7 @@ class ChangePasswordScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.commonUser
 });
 
 const mapDispatchToProps = dispatch => {

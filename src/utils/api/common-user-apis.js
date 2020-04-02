@@ -1,5 +1,5 @@
 import * as apiClient from "./apiClient";
-import { BASE_URL } from "./../../configs/serviceConfig";
+import { BASE_URL } from "../../configs/serviceConfig";
 
 export const authenticate = (username, password) => {
   const url = `${BASE_URL}/api/v1/authenticate`;

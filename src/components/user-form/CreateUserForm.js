@@ -7,7 +7,7 @@ import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import * as UserRole from "../../constants/UserRole";
-import { getUserRole } from "../../utils/helpers";
+import { helpers_getUserRole } from "../../utils/helpers";
 import { compose } from "redux";
 
 import * as mui from "../../utils/mui";
@@ -165,7 +165,7 @@ class CreateUserForm extends Component {
     return listRole.map((role, i) => {
       return (
         <MenuItem key={i} value={role}>
-          {getUserRole(role)}
+          {helpers_getUserRole(role)}
         </MenuItem>
       );
     });

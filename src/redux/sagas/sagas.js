@@ -2,7 +2,7 @@ import { all } from "redux-saga/effects";
 import { accountant_ClientScreenSagas } from "./accountant/client-screen-sagas";
 import { accountant_MainScreenSagas } from "./accountant/main-screen-sagas";
 import { accountant_TransactionScreenSagas } from "./accountant/transaction-screen-sagas";
-import { authSagas } from "./auth-sagas";
+import { commonUserSagas } from "./common-user-sagas";
 import { notificationSagas } from "./notification/notification-sagas";
 import { sale_ClientScreenSagas } from "./sale/client-screen-sagas";
 import { sale_MainScreenSagas } from "./sale/main-screen-sagas";
@@ -14,7 +14,7 @@ import { manager_UserScreenSagas } from "./manager/user-screen-saga";
 
 function* rootSaga() {
   yield all([
-    ...authSagas,
+    ...commonUserSagas,
     ...sale_ClientScreenSagas,
     ...sale_OrderScreenSagas,
     ...sale_MainScreenSagas,

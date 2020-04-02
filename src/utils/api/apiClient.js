@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getLocalToken } from "./../../utils/helpers";
+import { helpers_GetLocalToken } from "./../../utils/helpers";
 import * as toastUtils from "../toastUtils";
 
 const instance = axios.create();
@@ -26,7 +26,7 @@ function handleError(error) {
 }
 
 export const callApiGet = url => {
-  let authObj = getLocalToken();
+  let authObj = helpers_GetLocalToken();
   let config = {
     headers: {
       Authorization: authObj ? authObj.token : ""
@@ -44,7 +44,7 @@ export const callApiPost = (url, body, auth, headers) => {
       headers
     };
   } else {
-    let authObj = getLocalToken();
+    let authObj = helpers_GetLocalToken();
     config = {
       headers: {
         Authorization: authObj ? authObj.token : "",

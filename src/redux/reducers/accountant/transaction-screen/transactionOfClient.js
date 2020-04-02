@@ -1,5 +1,5 @@
 import * as TransactionScreenActType from "../../../../actions/accountant/transaction-screen/types";
-import * as MainScreenActType from "../../../../actions/auth-action/types";
+import * as MainScreenActType from "../../../../actions/common-user-action/types";
 
 const initialState = {
   client: null,

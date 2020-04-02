@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import MyAppBar from "../../components/app-bar/MyAppBar";
-import { hasPermission, getLocalToken } from "./../../utils/helpers";
+import {
+  helpers_hasPermission,
+  helpers_GetLocalToken
+} from "./../../utils/helpers";
 import * as UserRole from "../../constants/UserRole";
 import CreateUserScreen from "./user-screen/CreateUserScreen";
 import ListUserScreen from "./user-screen/ListUserScreen";
@@ -33,7 +36,7 @@ class ManagerScreen extends Component {
     let { auth, classes } = this.props;
     let { isAuthenticated, role } = auth;
 
-    let localToken = getLocalToken();
+    let localToken = helpers_GetLocalToken();
     if (localToken === null || isAuthenticated === false) {
       return (
         <Redirect
@@ -46,7 +49,9 @@ class ManagerScreen extends Component {
 
     // Main screen
     if (isAuthenticated === true) {
-      if (!hasPermission(role, [UserRole.ADMIN_SYSTEM, UserRole.MANAGER])) {
+      if (
+        !helpers_hasPermission(role, [UserRole.ADMIN_SYSTEM, UserRole.MANAGER])
+      ) {
         return (
           <Redirect
             to={{
@@ -89,7 +94,7 @@ class ManagerScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.commonUser
 });
 
 const mapDispatchToProps = dispatch => {

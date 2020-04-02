@@ -1,5 +1,5 @@
 import * as MainScreenActType from "../../../../actions/accountant/main-screen-action/types";
-import * as AuthActType from "../../../../actions/auth-action/types";
+import * as AuthActType from "../../../../actions/common-user-action/types";
 
 const initialState = null;
 

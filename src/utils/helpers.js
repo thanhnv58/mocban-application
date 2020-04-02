@@ -8,7 +8,7 @@ import * as NotificationType from "./../constants/NotificationType";
 import * as TransactionType from "./../constants/TransactionType";
 import * as TransactionOwner from "./../constants/TransactionOwner";
 
-export const getLocalToken = () => {
+export const helpers_GetLocalToken = () => {
   let authObj = JSON.parse(localStorage.getItem("MB_AUTH"));
 
   if (!authObj) {
@@ -31,7 +31,7 @@ export const getLocalToken = () => {
 };
 
 // eslint-disable-next-line require-yield
-export const saveAuthToStorage = data => {
+export const helpers_SaveAuthToStorage = data => {
   let { token, duration } = data;
 
   let expiredTime = moment()
@@ -89,16 +89,16 @@ export const getStatus = status => {
   }
 };
 
-export const getUserRole = role => {
+export const helpers_getUserRole = role => {
   switch (role) {
-    case UserRole.CLIENT:
-      return "Khách hàng";
+    case UserRole.ADMIN_SYSTEM:
+      return "Nhân viên Hệ thống";
     case UserRole.DESIGN:
       return "Thiết kế";
     case UserRole.DESIGN_LEADER:
       return "Trưởng thiết kế";
     case UserRole.SALE:
-      return "NV bán hàng";
+      return "Nhân viên Bán hàng";
     case UserRole.PRODUCER:
       return "Thợ mộc";
     case UserRole.PRODUCER_LEADER:
@@ -257,7 +257,9 @@ export const generateId = () => {
   return new Date().getTime();
 };
 
-export const hasPermission = (role, arrayRole) => {
+export const helpers_hasPermission = (role, arrayRole) => {
+  if (!arrayRole || arrayRole.length === 0) return false;
+
   let hasPermission = false;
 
   arrayRole.forEach(e => {

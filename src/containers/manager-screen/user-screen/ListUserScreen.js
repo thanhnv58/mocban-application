@@ -23,7 +23,7 @@ import {
   loadMoreUser
 } from "./../../../actions/manager/user-screen-action/actions";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { getUserRole } from "./../../../utils/helpers";
+import { helpers_getUserRole } from "./../../../utils/helpers";
 import Copyright from "./../../../components/Copyright";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import * as stringUtils from "./../../../utils/stringUtils";
@@ -95,7 +95,7 @@ class ListUserScreen extends Component {
               .removeAccents(user.address.toLocaleLowerCase())
               .includes(tempFilterText) ||
             stringUtils
-              .removeAccents(getUserRole(user.role).toLocaleLowerCase())
+              .removeAccents(helpers_getUserRole(user.role).toLocaleLowerCase())
               .includes(tempFilterText)
           );
         });
@@ -174,7 +174,7 @@ class ListUserScreen extends Component {
                 <StyledTableCell align="left">{user.email}</StyledTableCell>
                 <StyledTableCell align="left">{user.address}</StyledTableCell>
                 <StyledTableCell align="left">
-                  <b>{getUserRole(user.role)}</b>
+                  <b>{helpers_getUserRole(user.role)}</b>
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   <NavLink

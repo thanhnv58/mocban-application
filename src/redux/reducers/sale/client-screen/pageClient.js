@@ -1,5 +1,5 @@
 import * as ClientScreenActionType from "../../../../actions/sale/client-screen-action/types";
-import * as MainScreenActType from "../../../../actions/auth-action/types";
+import * as MainScreenActType from "../../../../actions/common-user-action/types";
 
 const initialState = {
   totalElements: 0,

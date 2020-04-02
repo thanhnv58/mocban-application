@@ -7,7 +7,10 @@ import { bindActionCreators, compose } from "redux";
 import MyAppBar from "../../components/app-bar/MyAppBar";
 import MyDrawerTechnician from "../../components/drawer/MyDrawerTechnician";
 import * as UserRole from "../../constants/UserRole";
-import { getLocalToken, hasPermission } from "../../utils/helpers";
+import {
+  helpers_GetLocalToken,
+  helpers_hasPermission
+} from "../../utils/helpers";
 import MainScreen from "./main-screen/MainScreen";
 import ListTaskScreen from "./task-screen/ListTaskScreen";
 import styles from "./styles";
@@ -32,7 +35,7 @@ class TechnicianScreen extends Component {
     let { auth, classes } = this.props;
     let { isAuthenticated, role } = auth;
 
-    let localToken = getLocalToken();
+    let localToken = helpers_GetLocalToken();
     if (localToken === null || isAuthenticated === false) {
       return (
         <Redirect
@@ -46,7 +49,7 @@ class TechnicianScreen extends Component {
     // Main screen
     if (isAuthenticated === true) {
       if (
-        !hasPermission(role, [
+        !helpers_hasPermission(role, [
           UserRole.DESIGN,
           UserRole.PRODUCER,
           UserRole.ADMIN_SYSTEM,
@@ -95,7 +98,7 @@ class TechnicianScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.autcommonUserh
 });
 
 const mapDispatchToProps = dispatch => {

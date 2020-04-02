@@ -5,35 +5,34 @@ import { connect } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import AccountantScreen from "../accountant-screen/AccountantScreen";
-import { actValidateToken } from "./../../actions/auth-action/actions";
-import { getLocalToken } from "./../../utils/helpers";
+import { actValidateToken } from "./../../actions/common-user-action/actions";
+import { helpers_GetLocalToken } from "./../../utils/helpers";
 import NotFound from "./../../views/not-found/NotFound";
 import DashboardScreen from "../manager-screen/ManagerScreen";
-import LoginScreen from "./../login-screen/LoginScreen";
-import LogoutScreen from "./../login-screen/LogoutScreen";
-import SaleScreen from "./../sale-screen/SaleScreen";
+import LoginScreen from "./../common-user/LoginScreen";
+import LogoutScreen from "./../common-user/LogoutScreen";
+import SaleScreen from "./../sale/SaleScreen";
 import styles from "./styles";
 import TechnicianScreen from "../technician-screen/TechnicianScreen";
 import ManagerScreen from "../manager-screen/ManagerScreen";
-import ChangePasswordScreen from "../login-screen/ChangePasswordScreen";
+import ChangePasswordScreen from "../common-user/ChangePasswordScreen";
 
 class App extends Component {
   componentDidMount() {
-    let { auth, actValidateToken } = this.props;
-    let { isAuthenticated } = auth;
+    let { isAuthenticated } = this.props;
 
-    let localToken = getLocalToken();
+    let localToken = helpers_GetLocalToken();
     if (localToken && isAuthenticated === null) {
+      let { actValidateToken } = this.props;
       actValidateToken();
     }
   }
 
   render() {
-    let { auth } = this.props;
-    let { isValidateToken } = auth;
+    let { ui_isValidateToken } = this.props;
 
-    // Show loading
-    if (isValidateToken === true) {
+    // Validating token with local storage
+    if (ui_isValidateToken === true) {
       return (
         <Grid container>
           <Grid item xs={12}>
@@ -43,18 +42,18 @@ class App extends Component {
           </Grid>
         </Grid>
       );
+    } else {
+      return (
+        <React.Fragment>
+          <Switch>
+            {routes.map((route, i) => {
+              return this.renderRoute(route, i);
+            })}
+            <Route path={"*"} component={NotFound} />
+          </Switch>
+        </React.Fragment>
+      );
     }
-
-    return (
-      <React.Fragment>
-        <Switch>
-          {routes.map((route, i) => {
-            return this.renderRoute(route, i);
-          })}
-          <Route path={"*"} component={NotFound} />
-        </Switch>
-      </React.Fragment>
-    );
   }
 
   renderRoute = (route, i) => {
@@ -74,7 +73,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  isAuthenticated: state.commonUser.isAuthenticated,
+  ui_isValidateToken: state.commonUser.ui_isValidateToken
 });
 
 const mapDispatchToProps = dispatch => {

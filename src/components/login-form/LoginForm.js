@@ -11,34 +11,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import { Field, reduxForm } from "redux-form";
-import { authenticate } from "../../actions/auth-action/actions";
+import { authenticate } from "../../actions/common-user-action/actions";
 import Copyright from "../../components/Copyright";
 import * as mui from "./../../utils/mui";
-// import ReCAPTCHA from "react-google-recaptcha";
 import styles from "./styles";
 
-// const grecaptchaObject = window.grecaptcha;
-
 class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      notPassCaptcha: false
-    };
-  }
-
-  onChange = value => {
-    if (value) {
-      this.setState({
-        notPassCaptcha: false
-      });
-    }
-  };
-
   render() {
-    let { classes, pristine, invalid, isLogin, handleSubmit } = this.props;
-    let { notPassCaptcha } = this.state;
+    let { classes, pristine, invalid, ui_isLogin, handleSubmit } = this.props;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -48,7 +28,7 @@ class LoginForm extends Component {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Đăng nhập
           </Typography>
           <form
             className={classes.form}
@@ -62,7 +42,7 @@ class LoginForm extends Component {
               margin="normal"
               required
               fullWidth
-              label="Username"
+              label="Tên đăng nhập"
               autoFocus
             />
             <Field
@@ -72,7 +52,7 @@ class LoginForm extends Component {
               margin="normal"
               required
               fullWidth
-              label="Password"
+              label="Mật khẩu"
               type="password"
               autoComplete="on"
             />
@@ -84,11 +64,11 @@ class LoginForm extends Component {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  disabled={pristine || invalid || isLogin || notPassCaptcha}
+                  disabled={pristine || invalid || ui_isLogin}
                 >
-                  Sign In
+                  Đăng nhập
                 </Button>
-                {isLogin && (
+                {ui_isLogin && (
                   <CircularProgress
                     size={24}
                     className={classes.buttonProgress}
@@ -96,28 +76,6 @@ class LoginForm extends Component {
                 )}
               </div>
             </Box>
-            {/* <Box display="flex" justifyContent="center" mt={2}>
-              <ReCAPTCHA
-                ref={r => (this.recaptcha = r)}
-                // sitekey="6Lf_h88UAAAAAJVfG5sI7crmtasKnyfoCzJy5Tpm" // local
-                sitekey="6Lf_h88UAAAAAJVfG5sI7crmtasKnyfoCzJy5Tpm" // server
-                onChange={this.onChange}
-                grecaptcha={grecaptchaObject}
-              />
-            </Box> */}
-
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
           </form>
         </div>
         <Box mt={5}>
@@ -136,7 +94,7 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLogin: state.auth.isLogin
+  ui_isLogin: state.commonUser.ui_isLogin
 });
 
 const mapDispatchToProps = dispatch => {

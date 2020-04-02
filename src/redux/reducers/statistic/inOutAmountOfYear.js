@@ -1,5 +1,5 @@
 import * as StatisticActionType from "../../../actions/statistic-action/types";
-import * as AuthActType from "../../../actions/auth-action/types";
+import * as AuthActType from "../../../actions/common-user-action/types";
 
 const initialState = null;
 

@@ -249,8 +249,8 @@ class MyAppBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  username: state.auth.username,
-  role: state.auth.role
+  username: state.commonUser.username,
+  role: state.commonUser.role
 });
 
 const connectRedux = connect(mapStateToProps);

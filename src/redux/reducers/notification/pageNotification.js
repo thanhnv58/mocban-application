@@ -1,5 +1,5 @@
 import * as NotificationActType from "./../../../actions/notification-action/types";
-import * as AuthActType from "./../../../actions/auth-action/types";
+import * as AuthActType from "./../../../actions/common-user-action/types";
 import * as arrayUtils from "./../../../utils/arrayUtils";
 
 const initialState = {

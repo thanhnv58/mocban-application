@@ -1,5 +1,5 @@
 import * as OrderScreenActType from "../../../../actions/sale/order-screen-action/types";
-import * as MainScreenActType from "../../../../actions/auth-action/types";
+import * as MainScreenActType from "../../../../actions/common-user-action/types";
 
 const initialState = null;
 
