@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import { Field, reduxForm } from "redux-form";
-import { createTransaction } from "../../actions/sale/order-screen-action/actions";
+import { createTransaction } from "../../actions/sale/order-management/actions";
 import { getCurrencyValue } from "../../utils/helpers";
 import * as mui from "../../utils/mui";
 import normalizeCurrency from "../../views/normalizeCurrency";
@@ -37,7 +37,7 @@ class OrderTransactionForm extends Component {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">VND</InputAdornment>
-                )
+                ),
               }}
               normalize={normalizeCurrency}
             />
@@ -79,7 +79,7 @@ class OrderTransactionForm extends Component {
     );
   }
 
-  onSubmit = formData => {
+  onSubmit = (formData) => {
     let { txtAmount, txtMessageAmount } = formData;
 
     let { id, reset } = this.props;
@@ -87,14 +87,14 @@ class OrderTransactionForm extends Component {
     let transactions = [
       {
         messageAmount: txtMessageAmount,
-        amount: getCurrencyValue(txtAmount)
-      }
+        amount: getCurrencyValue(txtAmount),
+      },
     ];
 
     let requestDto = {
       orderId: id,
       type: TransactionType.INCOME,
-      transactions: transactions
+      transactions: transactions,
     };
 
     let { createTransaction } = this.props;
@@ -106,7 +106,7 @@ class OrderTransactionForm extends Component {
 
 const withMyStyle = withStyles(styles);
 
-export const validate = values => {
+export const validate = (values) => {
   const errors = {};
 
   let { txtAmount, txtMessageAmount } = values;
@@ -118,15 +118,15 @@ export const validate = values => {
   const listField = [
     {
       field: "txtAmount",
-      message: "Nhập số tiền!"
+      message: "Nhập số tiền!",
     },
     {
       field: "txtMessageAmount",
-      message: "Nhập tin nhắn chuyển tiền!"
-    }
+      message: "Nhập tin nhắn chuyển tiền!",
+    },
   ];
 
-  listField.forEach(fieldElm => {
+  listField.forEach((fieldElm) => {
     if (!values[fieldElm.field]) {
       errors[fieldElm.field] = fieldElm.message;
       return errors;
@@ -141,14 +141,14 @@ export const validate = values => {
   return errors;
 };
 
-const mapStateToProps = state => ({
-  isLoading2: state.saleReducer.ui.isLoading2
+const mapStateToProps = (state) => ({
+  isLoading2: state.saleReducer.ui.isLoading2,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      createTransaction
+      createTransaction,
     },
     dispatch
   );
@@ -158,7 +158,7 @@ const connectRedux = connect(mapStateToProps, mapDispatchToProps);
 
 const userForm = reduxForm({
   form: "ORDER_TRANSACTION_FORM",
-  validate
+  validate,
 });
 
 export default compose(

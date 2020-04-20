@@ -1,7 +1,7 @@
 import { call, put, takeEvery, select } from "redux-saga/effects";
 import * as UserScreenActType from "../../../actions/manager/user-screen-action/types";
 import * as userApis from "../../../utils/api/userApis";
-import { toastSuccess } from "../../../utils/toastUtils";
+import { toastSuccess } from "../../../utils/ToastUtils";
 import { findElementInArray } from "./../../../utils/arrayUtils";
 
 function* createUser(action) {
@@ -11,7 +11,7 @@ function* createUser(action) {
 
   if (response === null) {
     yield put({
-      type: UserScreenActType.CREATE_USER_FAILED
+      type: UserScreenActType.CREATE_USER_FAILED,
     });
     return;
   }
@@ -20,7 +20,7 @@ function* createUser(action) {
   toastSuccess("Tạo người dùng thành công!");
   yield put({
     type: UserScreenActType.CREATE_USER_SUCCESS,
-    createUserResponse: response.data
+    createUserResponse: response.data,
   });
 }
 
@@ -31,7 +31,7 @@ function* updateUser(action) {
 
   if (response === null) {
     yield put({
-      type: UserScreenActType.UPDATE_USER_FAILED
+      type: UserScreenActType.UPDATE_USER_FAILED,
     });
     return;
   }
@@ -40,7 +40,7 @@ function* updateUser(action) {
   toastSuccess("Cập nhật thành công!");
   yield put({
     type: UserScreenActType.UPDATE_USER_SUCCESS,
-    updateUserRes: response.data
+    updateUserRes: response.data,
   });
 }
 
@@ -49,7 +49,7 @@ function* getAllUser(action) {
 
   if (response === null) {
     yield put({
-      type: UserScreenActType.GET_ALL_USER_FAILED
+      type: UserScreenActType.GET_ALL_USER_FAILED,
     });
     return;
   }
@@ -58,7 +58,7 @@ function* getAllUser(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: UserScreenActType.GET_ALL_USER_NO_CONTENT
+      type: UserScreenActType.GET_ALL_USER_NO_CONTENT,
     });
     return;
   }
@@ -66,12 +66,12 @@ function* getAllUser(action) {
   // Case SUCCESS
   yield put({
     type: UserScreenActType.GET_ALL_USER_SUCCESS,
-    pageUserRes: response.data
+    pageUserRes: response.data,
   });
 }
 
 function* loadMoreUser(action) {
-  const pageUser = yield select(state => state.managerReducer.pageUser);
+  const pageUser = yield select((state) => state.managerReducer.pageUser);
 
   let { currentPage } = pageUser;
 
@@ -79,7 +79,7 @@ function* loadMoreUser(action) {
 
   if (response === null) {
     yield put({
-      type: UserScreenActType.LOAD_MORE_LIST_USER_FAILED
+      type: UserScreenActType.LOAD_MORE_LIST_USER_FAILED,
     });
     return;
   }
@@ -87,18 +87,18 @@ function* loadMoreUser(action) {
   // Case SUCCESS
   yield put({
     type: UserScreenActType.LOAD_MORE_LIST_USER_SUCCESS,
-    pageLoadMoreUserRes: response.data
+    pageLoadMoreUserRes: response.data,
   });
 }
 
 function* getUserDetail(action) {
   let { username } = action;
 
-  const pageUser = yield select(state => state.managerReducer.pageUser);
+  const pageUser = yield select((state) => state.managerReducer.pageUser);
 
   let { users } = pageUser;
 
-  let userRes = findElementInArray(users, u => {
+  let userRes = findElementInArray(users, (u) => {
     return u.username === username;
   });
 
@@ -106,14 +106,14 @@ function* getUserDetail(action) {
     // Case SUCCESS
     yield put({
       type: UserScreenActType.GET_USER_DETAIL_SUCCESS,
-      userDetailRes: userRes
+      userDetailRes: userRes,
     });
   } else {
     const response = yield call(userApis.getUserInfo, username);
 
     if (response === null) {
       yield put({
-        type: UserScreenActType.GET_USER_DETAIL_FAILED
+        type: UserScreenActType.GET_USER_DETAIL_FAILED,
       });
       return;
     }
@@ -121,7 +121,7 @@ function* getUserDetail(action) {
     // Case SUCCESS
     yield put({
       type: UserScreenActType.GET_USER_DETAIL_SUCCESS,
-      userDetailRes: response.data
+      userDetailRes: response.data,
     });
   }
 }
@@ -133,7 +133,7 @@ function* getPassword(action) {
 
   if (response === null) {
     yield put({
-      type: UserScreenActType.GET_PASSWORD_FAILED
+      type: UserScreenActType.GET_PASSWORD_FAILED,
     });
     return;
   }
@@ -141,7 +141,7 @@ function* getPassword(action) {
   // Case SUCCESS
   yield put({
     type: UserScreenActType.GET_PASSWORD_SUCCESS,
-    getPasswordRes: response.data
+    getPasswordRes: response.data,
   });
 }
 
@@ -151,5 +151,5 @@ export const manager_UserScreenSagas = [
   takeEvery(UserScreenActType.LOAD_MORE_LIST_USER, loadMoreUser),
   takeEvery(UserScreenActType.GET_USER_DETAIL, getUserDetail),
   takeEvery(UserScreenActType.UPDATE_USER, updateUser),
-  takeEvery(UserScreenActType.GET_PASSWORD, getPassword)
+  takeEvery(UserScreenActType.GET_PASSWORD, getPassword),
 ];

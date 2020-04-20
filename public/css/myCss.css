@@ -1,0 +1,49 @@
+.table-header {
+  background-color: #039be5 !important;
+  color: white !important;
+}
+
+.btn-green {
+  background-color: #00c853 !important;
+}
+
+.btn-blue {
+  background-color: #2962ff !important;
+}
+
+.btn-orange {
+  background-color: orange !important;
+}
+
+.color-blue {
+  color: #2962ff !important;
+}
+
+.btn-red {
+  background-color: red !important;
+}
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  /* max-width: 0; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis {
+  max-width: 0;
+}
+
+div.middle-div {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  padding-left: 10px;
+}

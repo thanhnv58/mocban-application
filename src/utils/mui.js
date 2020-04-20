@@ -49,7 +49,7 @@ export const renderSelectField = ({
 );
 
 export const radioOrderType = ({ input, ...rest }) => {
-  let listRadio = [OrderType.DESIGN, OrderType.PRODUCTION];
+  let listRadio = [OrderType.DESIGN, OrderType.PRODUCT];
 
   return (
     <FormControl>

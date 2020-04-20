@@ -1,8 +1,8 @@
 import { call, put, takeEvery, select } from "redux-saga/effects";
 import * as TransactionScreenType from "../../../actions/accountant/transaction-screen/types";
 import * as transactionApi from "../../../utils/api/transactionApi";
-import * as toastUtils from "./../../../utils/toastUtils";
-import { parseDateTime2 } from "./../../../utils/timeUtils";
+import * as toastUtils from "./../../../utils/ToastUtils";
+import { timeUtils_parseDateTime2 } from "./../../../utils/timeUtils";
 import * as TransactionOwner from "./../../../constants/TransactionOwner";
 import * as TransactionType from "./../../../constants/TransactionType";
 
@@ -18,7 +18,7 @@ function* getTransactionOfClient(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.GET_TRANSACTION_OF_CLIENT_FALIED
+      type: TransactionScreenType.GET_TRANSACTION_OF_CLIENT_FALIED,
     });
     return;
   }
@@ -26,7 +26,7 @@ function* getTransactionOfClient(action) {
   // Case SUCCESS
   yield put({
     type: TransactionScreenType.GET_TRANSACTION_OF_CLIENT_SUCCESS,
-    transactionOfClient: response.data
+    transactionOfClient: response.data,
   });
 }
 
@@ -37,7 +37,7 @@ function* createAllTransactions(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.CREATE_ALL_TRANSACTION_FAILED
+      type: TransactionScreenType.CREATE_ALL_TRANSACTION_FAILED,
     });
     return;
   }
@@ -46,7 +46,7 @@ function* createAllTransactions(action) {
   toastUtils.toastSuccess("Lưu tất cả giao dịch thành công!");
   yield put({
     type: TransactionScreenType.CREATE_ALL_TRANSACTION_SUCCESS,
-    createAllRes: response.data
+    createAllRes: response.data,
   });
 }
 
@@ -56,7 +56,7 @@ function* searchTransaction(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.SEARCH_TRANSACTION_FAILED
+      type: TransactionScreenType.SEARCH_TRANSACTION_FAILED,
     });
     return;
   }
@@ -65,7 +65,7 @@ function* searchTransaction(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: TransactionScreenType.SEARCH_TRANSACTION_NO_CONTENT
+      type: TransactionScreenType.SEARCH_TRANSACTION_NO_CONTENT,
     });
     return;
   }
@@ -73,7 +73,7 @@ function* searchTransaction(action) {
   // Case SUCCESS
   yield put({
     type: TransactionScreenType.SEARCH_TRANSACTION_SUCCESS,
-    pageSearchTransaction: response.data
+    pageSearchTransaction: response.data,
   });
 }
 
@@ -82,7 +82,7 @@ function* getTransactionNeedValidate(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.GET_TRANSACTION_NEED_VALIDATE_FAILED
+      type: TransactionScreenType.GET_TRANSACTION_NEED_VALIDATE_FAILED,
     });
     return;
   }
@@ -91,7 +91,7 @@ function* getTransactionNeedValidate(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: TransactionScreenType.GET_TRANSACTION_NEED_VALIDATE_NO_CONTENT
+      type: TransactionScreenType.GET_TRANSACTION_NEED_VALIDATE_NO_CONTENT,
     });
     return;
   }
@@ -99,16 +99,16 @@ function* getTransactionNeedValidate(action) {
   // Case SUCCESS
   yield put({
     type: TransactionScreenType.GET_TRANSACTION_NEED_VALIDATE_SUCCESS,
-    pageTransactionNeedValidateRes: response.data
+    pageTransactionNeedValidateRes: response.data,
   });
 }
 
 function* loadMoreSearchTransaction(action) {
   const pageSearchTransaction = yield select(
-    state => state.accountantReducer.pageSearchTransaction
+    (state) => state.accountantReducer.pageSearchTransaction
   );
   const searchTransactionOption = yield select(
-    state => state.accountantReducer.ui.searchTransactionOption
+    (state) => state.accountantReducer.ui.searchTransactionOption
   );
 
   let {
@@ -118,7 +118,7 @@ function* loadMoreSearchTransaction(action) {
     byMonth,
     byYear,
     startDate,
-    endDate
+    endDate,
   } = searchTransactionOption;
 
   let owner =
@@ -138,9 +138,10 @@ function* loadMoreSearchTransaction(action) {
   let requestDto = {
     owner,
     type,
-    startDate: radioSearchByTime === 1 ? parseDateTime2(startDate) : null,
-    endDate: radioSearchByTime === 1 ? parseDateTime2(endDate) : null,
-    month: radioSearchByTime === 0 ? `${byMonth}-${byYear}` : null
+    startDate:
+      radioSearchByTime === 1 ? timeUtils_parseDateTime2(startDate) : null,
+    endDate: radioSearchByTime === 1 ? timeUtils_parseDateTime2(endDate) : null,
+    month: radioSearchByTime === 0 ? `${byMonth}-${byYear}` : null,
   };
 
   let { currentPage } = pageSearchTransaction;
@@ -153,7 +154,7 @@ function* loadMoreSearchTransaction(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.LOAD_MORE_SEARCH_TRANSACTION_FAILED
+      type: TransactionScreenType.LOAD_MORE_SEARCH_TRANSACTION_FAILED,
     });
     return;
   }
@@ -161,13 +162,13 @@ function* loadMoreSearchTransaction(action) {
   // Case SUCCESS
   yield put({
     type: TransactionScreenType.LOAD_MORE_SEARCH_TRANSACTION_SUCCESS,
-    pageLoadMoreSearchTransaction: response.data
+    pageLoadMoreSearchTransaction: response.data,
   });
 }
 
 function* loadMoreClientTransactionList(action) {
   const transactionOfClient = yield select(
-    state => state.accountantReducer.transactionOfClient
+    (state) => state.accountantReducer.transactionOfClient
   );
 
   let { client, transactions } = transactionOfClient;
@@ -182,7 +183,7 @@ function* loadMoreClientTransactionList(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.LOAD_MORE_CLIENT_TRANSACTION_LIST_FAILED
+      type: TransactionScreenType.LOAD_MORE_CLIENT_TRANSACTION_LIST_FAILED,
     });
     return;
   }
@@ -190,13 +191,13 @@ function* loadMoreClientTransactionList(action) {
   // Case SUCCESS
   yield put({
     type: TransactionScreenType.LOAD_MORE_CLIENT_TRANSACTION_LIST_SUCCESS,
-    pageLoadMoreClientTransaction: response.data
+    pageLoadMoreClientTransaction: response.data,
   });
 }
 
 function* loadMoreTransactionNeedValidate(action) {
   const pageTransactionNeedValidate = yield select(
-    state => state.accountantReducer.pageTransactionNeedValidate
+    (state) => state.accountantReducer.pageTransactionNeedValidate
   );
 
   let { currentPage } = pageTransactionNeedValidate;
@@ -208,7 +209,7 @@ function* loadMoreTransactionNeedValidate(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.LOAD_MORE_TRANSACTION_NEED_VALIDATE_FAILED
+      type: TransactionScreenType.LOAD_MORE_TRANSACTION_NEED_VALIDATE_FAILED,
     });
     return;
   }
@@ -216,7 +217,7 @@ function* loadMoreTransactionNeedValidate(action) {
   // Case SUCCESS
   yield put({
     type: TransactionScreenType.LOAD_MORE_TRANSACTION_NEED_VALIDATE_SUCCESS,
-    pageLoadMoreTransactionNeedValidate: response.data
+    pageLoadMoreTransactionNeedValidate: response.data,
   });
 }
 
@@ -230,7 +231,7 @@ function* validateTransactionOk(action) {
 
   if (response === null) {
     yield put({
-      type: TransactionScreenType.VALIDATE_TRANSACTION_OK_FAILED
+      type: TransactionScreenType.VALIDATE_TRANSACTION_OK_FAILED,
     });
     return;
   }
@@ -239,7 +240,7 @@ function* validateTransactionOk(action) {
   toastUtils.toastSuccess("Xác nhận thành công!");
   yield put({
     type: TransactionScreenType.VALIDATE_TRANSACTION_OK_SUCCESS,
-    validateRes: response.data
+    validateRes: response.data,
   });
 }
 
@@ -273,5 +274,5 @@ export const accountant_TransactionScreenSagas = [
   takeEvery(
     TransactionScreenType.VALIDATE_TRANSACTION_OK,
     validateTransactionOk
-  )
+  ),
 ];

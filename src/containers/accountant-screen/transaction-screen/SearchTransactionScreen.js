@@ -14,7 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  InputBase
+  InputBase,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import { withStyles } from "@material-ui/core/styles";
@@ -25,7 +25,7 @@ import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import {
   searchTransaction,
-  loadMoreSearchTransaction
+  loadMoreSearchTransaction,
 } from "../../../actions/accountant/transaction-screen/actions";
 import Copyright from "../../../components/Copyright";
 import SelectDateComponent from "../../../components/date-time/SelectDateComponent";
@@ -37,11 +37,11 @@ import {
   getCurrency,
   getTransactionType,
   getTransactionTypeColor,
-  getTransactionOwnerColor
+  getTransactionOwnerColor,
 } from "../../../utils/helpers";
 import {
   convertFrontEndDateTime,
-  parseDateTime2
+  timeUtils_parseDateTime2,
 } from "../../../utils/timeUtils";
 import styles from "./styles";
 
@@ -59,7 +59,7 @@ class SearchTransactionScreen extends Component {
       startDate: d,
       endDate: d,
       showDialogDetail: false,
-      filterText: null
+      filterText: null,
     };
   }
 
@@ -67,7 +67,7 @@ class SearchTransactionScreen extends Component {
     let { searchTransactionOption } = this.props;
     if (searchTransactionOption) {
       this.setState({
-        ...searchTransactionOption
+        ...searchTransactionOption,
       });
     }
   }
@@ -165,7 +165,7 @@ class SearchTransactionScreen extends Component {
   changeMonth = (month, year) => {
     this.setState({
       byMonth: month,
-      byYear: year
+      byYear: year,
     });
 
     let { startDate, endDate } = this.state;
@@ -176,7 +176,7 @@ class SearchTransactionScreen extends Component {
   changeDate = (startDate, endDate) => {
     this.setState({
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
     });
 
     let { byMonth, byYear } = this.state;
@@ -247,12 +247,12 @@ class SearchTransactionScreen extends Component {
     );
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     let { target } = e;
     let { name, value } = target;
 
     this.setState({
-      [name]: parseInt(value)
+      [name]: parseInt(value),
     });
   };
 
@@ -260,7 +260,7 @@ class SearchTransactionScreen extends Component {
     let {
       radioSearchByTime,
       radioSearchByOwner,
-      radioSearchByType
+      radioSearchByType,
     } = this.state;
 
     let owner =
@@ -280,9 +280,11 @@ class SearchTransactionScreen extends Component {
     let requestDto = {
       owner,
       type,
-      startDate: radioSearchByTime === 1 ? parseDateTime2(startDate) : null,
-      endDate: radioSearchByTime === 1 ? parseDateTime2(endDate) : null,
-      month: radioSearchByTime === 0 ? `${month}-${year}` : null
+      startDate:
+        radioSearchByTime === 1 ? timeUtils_parseDateTime2(startDate) : null,
+      endDate:
+        radioSearchByTime === 1 ? timeUtils_parseDateTime2(endDate) : null,
+      month: radioSearchByTime === 0 ? `${month}-${year}` : null,
     };
 
     let { searchTransaction } = this.props;
@@ -293,7 +295,7 @@ class SearchTransactionScreen extends Component {
       byMonth: month,
       byYear: year,
       startDate,
-      endDate
+      endDate,
     });
   };
 
@@ -303,7 +305,7 @@ class SearchTransactionScreen extends Component {
       currentPage,
       transactions,
       totalPage,
-      totalElements
+      totalElements,
     } = pageSearchTransaction;
 
     let totalAmount = 0;
@@ -319,7 +321,7 @@ class SearchTransactionScreen extends Component {
     const filtedTransactions =
       filterText === null
         ? transactions
-        : transactions.filter(t => {
+        : transactions.filter((t) => {
             return t.client
               ? t.client.username.includes(tempFilterText)
               : false;
@@ -349,7 +351,7 @@ class SearchTransactionScreen extends Component {
                     placeholder="Nhập mã khách hàng"
                     classes={{
                       root: classes.inputRoot,
-                      input: classes.inputInput
+                      input: classes.inputInput,
                     }}
                     type="search"
                     inputProps={{ "aria-label": "search" }}
@@ -410,7 +412,7 @@ class SearchTransactionScreen extends Component {
                     <StyledTableCell align="center">
                       <b
                         style={{
-                          color: getTransactionTypeColor(transaction.type)
+                          color: getTransactionTypeColor(transaction.type),
                         }}
                       >
                         {getTransactionType(transaction.type)}
@@ -419,7 +421,7 @@ class SearchTransactionScreen extends Component {
                     <StyledTableCell align="center">
                       <b
                         style={{
-                          color: getTransactionOwnerColor(transaction.owner)
+                          color: getTransactionOwnerColor(transaction.owner),
                         }}
                       >
                         {transaction.owner}
@@ -475,13 +477,13 @@ class SearchTransactionScreen extends Component {
     );
   };
 
-  addFilter = e => {
+  addFilter = (e) => {
     let { value } = e.target;
 
     let filterText = value ? value : null;
 
     this.setState({
-      filterText
+      filterText,
     });
   };
 
@@ -491,18 +493,18 @@ class SearchTransactionScreen extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading1: state.accountantReducer.ui.isLoading1,
   isLoading2: state.accountantReducer.ui.isLoading2,
   searchTransactionOption: state.accountantReducer.ui.searchTransactionOption,
-  pageSearchTransaction: state.accountantReducer.pageSearchTransaction
+  pageSearchTransaction: state.accountantReducer.pageSearchTransaction,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       searchTransaction,
-      loadMoreSearchTransaction
+      loadMoreSearchTransaction,
     },
     dispatch
   );
@@ -514,20 +516,20 @@ const withMyStyle = withStyles(styles);
 
 export default compose(connectRedux, withMyStyle)(SearchTransactionScreen);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
-  }
+      backgroundColor: theme.palette.background.default,
+    },
+  },
 }))(TableRow);
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: "#0288d1",
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }))(TableCell);

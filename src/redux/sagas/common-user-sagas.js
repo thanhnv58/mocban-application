@@ -2,7 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import * as CommonUserAct from "../../actions/common-user-action/types";
 import * as commonUserApis from "../../utils/api/common-user-apis";
 import { helpers_SaveAuthToStorage } from "../../utils/helpers";
-import { toastSuccess } from "../../utils/toastUtils";
+import { toastSuccess } from "../../utils/ToastUtils";
 
 function* authenticate(action) {
   let { username, password } = action;
@@ -11,7 +11,7 @@ function* authenticate(action) {
 
   if (response === null) {
     yield put({
-      type: CommonUserAct.ACT_AUTHENTICATE_FAILED
+      type: CommonUserAct.ACT_AUTHENTICATE_FAILED,
     });
     return;
   }
@@ -26,7 +26,7 @@ function* authenticate(action) {
   yield put({
     type: CommonUserAct.ACT_AUTHENTICATE_SUCCESS,
     authResponse: data,
-    username
+    username,
   });
 }
 
@@ -35,7 +35,7 @@ function* validateToken(action) {
 
   if (response === null) {
     yield put({
-      type: CommonUserAct.VALIDATE_TOKEN_FAILED
+      type: CommonUserAct.VALIDATE_TOKEN_FAILED,
     });
     return;
   }
@@ -43,7 +43,7 @@ function* validateToken(action) {
   // Case SUCCESS
   yield put({
     type: CommonUserAct.VALIDATE_TOKEN_SUCCESS,
-    validateTokenRes: response.data
+    validateTokenRes: response.data,
   });
 }
 
@@ -53,7 +53,7 @@ function* changePassword(action) {
 
   if (response === null) {
     yield put({
-      type: CommonUserAct.CHANGE_PASSWORD_FAILED
+      type: CommonUserAct.CHANGE_PASSWORD_FAILED,
     });
     return;
   }
@@ -61,12 +61,12 @@ function* changePassword(action) {
   // Case SUCCESS
   toastSuccess("Đổi mật khẩu thành công!");
   yield put({
-    type: CommonUserAct.CHANGE_PASSWORD_SUCCESS
+    type: CommonUserAct.CHANGE_PASSWORD_SUCCESS,
   });
 }
 
 export const commonUserSagas = [
   takeEvery(CommonUserAct.ACT_AUTHENTICATE, authenticate),
   takeEvery(CommonUserAct.VALIDATE_TOKEN, validateToken),
-  takeEvery(CommonUserAct.CHANGE_PASSWORD, changePassword)
+  takeEvery(CommonUserAct.CHANGE_PASSWORD, changePassword),
 ];

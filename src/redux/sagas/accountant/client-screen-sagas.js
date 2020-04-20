@@ -2,14 +2,14 @@ import { call, put, takeEvery, select } from "redux-saga/effects";
 import * as ClientScreenType from "./../../../actions/accountant/client-screen-action/types";
 import * as UserRole from "./../../../constants/UserRole";
 import * as userApis from "./../../../utils/api/userApis";
-// import * as toastUtils from "./../../../utils/toastUtils";
+// import * as toastUtils from "./../../../utils/ToastUtils";
 
 function* getAllClient(action) {
   const response = yield call(userApis.getAllUser, 0, UserRole.CLIENT);
 
   if (response === null) {
     yield put({
-      type: ClientScreenType.GET_ALL_CLIENT_FAILED
+      type: ClientScreenType.GET_ALL_CLIENT_FAILED,
     });
     return;
   }
@@ -18,7 +18,7 @@ function* getAllClient(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: ClientScreenType.GET_ALL_CLIENT_NO_CONTENT
+      type: ClientScreenType.GET_ALL_CLIENT_NO_CONTENT,
     });
     return;
   }
@@ -26,12 +26,14 @@ function* getAllClient(action) {
   // Case SUCCESS
   yield put({
     type: ClientScreenType.GET_ALL_CLIENT_SUCCESS,
-    pageClientRes: response.data
+    pageClientRes: response.data,
   });
 }
 
 function* loadMoreClient(action) {
-  const pageClient = yield select(state => state.accountantReducer.pageClient);
+  const pageClient = yield select(
+    (state) => state.accountantReducer.pageClient
+  );
 
   let { currentPage } = pageClient;
 
@@ -43,7 +45,7 @@ function* loadMoreClient(action) {
 
   if (response === null) {
     yield put({
-      type: ClientScreenType.LOAD_MORE_CLIENT_FAILED
+      type: ClientScreenType.LOAD_MORE_CLIENT_FAILED,
     });
     return;
   }
@@ -51,11 +53,11 @@ function* loadMoreClient(action) {
   // Case SUCCESS
   yield put({
     type: ClientScreenType.LOAD_MORE_CLIENT_SUCCESS,
-    pageLoadMoreClientRes: response.data
+    pageLoadMoreClientRes: response.data,
   });
 }
 
 export const accountant_ClientScreenSagas = [
   takeEvery(ClientScreenType.GET_ALL_CLIENT, getAllClient),
-  takeEvery(ClientScreenType.LOAD_MORE_CLIENT, loadMoreClient)
+  takeEvery(ClientScreenType.LOAD_MORE_CLIENT, loadMoreClient),
 ];

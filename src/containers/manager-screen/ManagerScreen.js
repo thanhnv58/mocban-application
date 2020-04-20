@@ -7,7 +7,7 @@ import { bindActionCreators, compose } from "redux";
 import MyAppBar from "../../components/app-bar/MyAppBar";
 import {
   helpers_hasPermission,
-  helpers_GetLocalToken
+  helpers_GetLocalToken,
 } from "./../../utils/helpers";
 import * as UserRole from "../../constants/UserRole";
 import CreateUserScreen from "./user-screen/CreateUserScreen";
@@ -22,13 +22,13 @@ class ManagerScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
     };
   }
 
   handleDrawerToggle = () => {
     this.setState({
-      mobileOpen: !this.state.mobileOpen
+      mobileOpen: !this.state.mobileOpen,
     });
   };
 
@@ -41,7 +41,7 @@ class ManagerScreen extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/login"
+            pathname: "/login",
           }}
         />
       );
@@ -49,13 +49,11 @@ class ManagerScreen extends Component {
 
     // Main screen
     if (isAuthenticated === true) {
-      if (
-        !helpers_hasPermission(role, [UserRole.ADMIN_SYSTEM, UserRole.MANAGER])
-      ) {
+      if (!helpers_hasPermission(role, [UserRole.ADMIN, UserRole.MANAGER])) {
         return (
           <Redirect
             to={{
-              pathname: "/notfound"
+              pathname: "/notfound",
             }}
           />
         );
@@ -93,11 +91,11 @@ class ManagerScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.commonUser
+const mapStateToProps = (state) => ({
+  auth: state.commonUser,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({}, dispatch);
 };
 
@@ -114,27 +112,27 @@ const routes = [
     render: () => (
       <Redirect
         to={{
-          pathname: "/manager/home"
+          pathname: "/manager/home",
         }}
       />
-    )
+    ),
   },
   {
     path: "/manager/home",
-    render: () => <MainScreen />
+    render: () => <MainScreen />,
   },
   {
     path: "/manager/create-user",
     exact: true,
     render: () => {
       return <CreateUserScreen />;
-    }
+    },
   },
   {
     path: "/manager/list-user",
     render: () => {
       return <ListUserScreen />;
-    }
+    },
   },
   {
     path: "/manager/detail-user/:username",
@@ -142,6 +140,6 @@ const routes = [
       let { params } = match;
 
       return <DetailUserScreen username={params.username} />;
-    }
-  }
+    },
+  },
 ];

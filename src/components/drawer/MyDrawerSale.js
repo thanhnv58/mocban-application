@@ -6,11 +6,11 @@ import List from "@material-ui/core/List";
 import { withStyles } from "@material-ui/core/styles";
 import ApartmentIcon from "@material-ui/icons/Apartment";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import HomeIcon from "@material-ui/icons/Home";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import LocalPharmacyIcon from "@material-ui/icons/LocalPharmacy";
-import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
+// import HomeIcon from "@material-ui/icons/Home";
+// import ListAltIcon from "@material-ui/icons/ListAlt";
+// import LocalPharmacyIcon from "@material-ui/icons/LocalPharmacy";
+// import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
+// import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -20,47 +20,35 @@ import styles from "./styles";
 
 const listMenu1 = [
   {
-    title: "Trang chủ",
-    icon: <HomeIcon />,
-    isLink: true,
-    path: "/sale/home"
-  },
-  {
     title: "Quản lý khách hàng",
     icon: <SupervisorAccountIcon />,
-    isNested: true,
-    open: false,
-    children: [
-      {
-        title: "Tạo khách hàng",
-        icon: <PersonAddIcon />,
-        path: "/sale/create-client"
-      },
-      {
-        title: "Danh sách khách hàng",
-        icon: <PermContactCalendarIcon />,
-        path: "/sale/list-client"
-      }
-    ]
+    isLink: true,
+    path: "/sale/client-management"
   },
   {
     title: "Quản lý đơn hàng",
     icon: <ApartmentIcon />,
-    isNested: true,
-    open: false,
-    children: [
-      {
-        title: "Tạo đơn hàng",
-        icon: <LocalPharmacyIcon />,
-        path: "/sale/create-order"
-      },
-      {
-        title: "Danh sách đơn hàng",
-        icon: <ListAltIcon />,
-        path: "/sale/list-order"
-      }
-    ]
+    isLink: true,
+    path: "/sale/order-management"
   }
+  // {
+  //   title: "Quản lý đơn hàng",
+  //   icon: <ApartmentIcon />,
+  //   isNested: true,
+  //   open: false,
+  //   children: [
+  //     {
+  //       title: "Tạo đơn hàng",
+  //       icon: <LocalPharmacyIcon />,
+  //       path: "/sale/create-order"
+  //     },
+  //     {
+  //       title: "Danh sách đơn hàng",
+  //       icon: <ListAltIcon />,
+  //       path: "/sale/list-order"
+  //     }
+  //   ]
+  // }
 ];
 
 const listMenu2 = [

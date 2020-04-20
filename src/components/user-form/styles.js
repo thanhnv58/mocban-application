@@ -1,14 +1,7 @@
 import { green } from "@material-ui/core/colors";
-const styles = theme => ({
-  formControl: {
-    minWidth: 120,
-    width: "100%"
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2)
-  },
+const styles = (theme) => ({
   wrapper: {
-    position: "relative"
+    position: "relative",
   },
   buttonProgress: {
     color: green[500],
@@ -16,8 +9,8 @@ const styles = theme => ({
     top: "50%",
     left: "50%",
     marginTop: -12,
-    marginLeft: -12
-  }
+    marginLeft: -12,
+  },
 });
 
 export default styles;

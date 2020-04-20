@@ -1,82 +1,125 @@
-import { call, put, takeEvery, select } from "redux-saga/effects";
-import * as ClientScreenType from "./../../../actions/sale/client-screen-action/types";
-import * as UserRole from "./../../../constants/UserRole";
-import * as userApis from "./../../../utils/api/userApis";
-import * as toastUtils from "./../../../utils/toastUtils";
+import { call, put, takeEvery } from "redux-saga/effects";
+import * as ClientManagementAct from "./../../../actions/sale/client-management/types";
+import * as saleApis from "./../../../utils/api/saleApis";
+import * as toastUtils from "./../../../utils/ToastUtils";
 
 function* createClient(action) {
   let { requestDto } = action;
 
-  const response = yield call(userApis.createUser, requestDto);
+  const response = yield call(saleApis.createClient, requestDto);
 
   if (response === null) {
     yield put({
-      type: ClientScreenType.ACT_CREATE_CLIENT_FAILED
+      type: ClientManagementAct.ACT_CREATE_CLIENT_FAILED,
     });
     return;
   }
 
   // Case SUCCESS
-  toastUtils.toastSuccess("Tạo khách hàng thành công!");
+  toastUtils.toastSuccess("Mã khách hàng mới: " + response.data.code);
   yield put({
-    type: ClientScreenType.ACT_CREATE_CLIENT_SUCCESS,
-    newClient: response.data
+    type: ClientManagementAct.ACT_CREATE_CLIENT_SUCCESS,
   });
 }
 
-function* fetchListClient(action) {
-  const response = yield call(userApis.getAllUser, 0, UserRole.CLIENT);
+function* updateClient(action) {
+  let { idClient, requestDto } = action;
+
+  const response = yield call(saleApis.updateClient, idClient, requestDto);
 
   if (response === null) {
     yield put({
-      type: ClientScreenType.ACT_FETCH_LIST_CLIENT_FAILED
-    });
-    return;
-  }
-
-  // Case 204 - No content
-  let { status } = response;
-  if (status === 204) {
-    yield put({
-      type: ClientScreenType.ACT_FETCH_LIST_CLIENT_NO_CONTENT
+      type: ClientManagementAct.ACT_UPDATE_CLIENT_FAILED,
     });
     return;
   }
 
   // Case SUCCESS
+  toastUtils.toastSuccess("Cập nhật thành công!");
   yield put({
-    type: ClientScreenType.ACT_FETCH_LIST_CLIENT_SUCCESS,
-    pageClientRes: response.data
+    type: ClientManagementAct.ACT_UPDATE_CLIENT_SUCCESS,
+    updateClientRes: response.data,
   });
 }
 
-function* loadMoreClient(action) {
-  const pageClient = yield select(state => state.saleReducer.pageClient);
-
-  let { currentPage } = pageClient;
+function* getAllClient(action) {
+  let { isLoading, pageIndex, size, search, status } = action;
 
   const response = yield call(
-    userApis.getAllUser,
-    currentPage + 1,
-    UserRole.CLIENT
+    saleApis.getAllClient,
+    pageIndex,
+    size,
+    search,
+    status
   );
 
   if (response === null) {
     yield put({
-      type: ClientScreenType.ACT_LOAD_MORE_CLIENT_FAILED
+      type: ClientManagementAct.ACT_GET_ALL_CLIENT_FAILED,
+      isLoading,
     });
     return;
   }
 
   // Case SUCCESS
   yield put({
-    type: ClientScreenType.ACT_LOAD_MORE_CLIENT_SUCCESS,
-    pageLoadMoreClientRes: response.data
+    type: ClientManagementAct.ACT_GET_ALL_CLIENT_SUCCESS,
+    isLoading,
+    getAllClientRes: response.data,
+    page: pageIndex,
+    size,
+    search,
+    status,
   });
 }
 
+function* getClientDetail(action) {
+  let { idClient } = action;
+
+  const response = yield call(saleApis.getClientDetail, idClient);
+
+  if (response === null) {
+    yield put({
+      type: ClientManagementAct.ACT_GET_CLIENT_DETAIL_FAILED,
+    });
+    return;
+  }
+
+  // Case SUCCESS
+  yield put({
+    type: ClientManagementAct.ACT_GET_CLIENT_DETAIL_SUCCESS,
+    getClientDetailRes: response.data,
+  });
+}
+
+// function* loadMoreClient(action) {
+//   const pageClient = yield select(state => state.saleReducer.pageClient);
+
+//   let { currentPage } = pageClient;
+
+//   const response = yield call(
+//     userApis.getAllUser,
+//     currentPage + 1,
+//     UserRole.CLIENT
+//   );
+
+//   if (response === null) {
+//     yield put({
+//       type: ClientManagementAct.ACT_LOAD_MORE_CLIENT_FAILED
+//     });
+//     return;
+//   }
+
+//   // Case SUCCESS
+//   yield put({
+//     type: ClientManagementAct.ACT_LOAD_MORE_CLIENT_SUCCESS,
+//     pageLoadMoreClientRes: response.data
+//   });
+// }
+
 export const sale_ClientScreenSagas = [
-  takeEvery(ClientScreenType.ACT_CREATE_CLIENT, createClient),
-  takeEvery(ClientScreenType.ACT_FETCH_LIST_CLIENT, fetchListClient),
-  takeEvery(ClientScreenType.ACT_LOAD_MORE_CLIENT, loadMoreClient)
+  takeEvery(ClientManagementAct.ACT_CREATE_CLIENT, createClient),
+  takeEvery(ClientManagementAct.ACT_GET_ALL_CLIENT, getAllClient),
+  takeEvery(ClientManagementAct.ACT_GET_CLIENT_DETAIL, getClientDetail),
+  takeEvery(ClientManagementAct.ACT_UPDATE_CLIENT, updateClient),
 ];

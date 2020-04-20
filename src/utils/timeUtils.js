@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const parseDateTime = date => {
+export const parseDateTime = (date) => {
   if (date) {
     return moment(date).format("YYYY-MM-DDTHH:mm:ss");
   }
@@ -8,7 +8,7 @@ export const parseDateTime = date => {
   return null;
 };
 
-export const parseDateTime2 = date => {
+export const timeUtils_parseDateTime2 = (date) => {
   if (date) {
     return moment(date).format("YYYY-MM-DD");
   }
@@ -26,7 +26,7 @@ export const estimateDateTime = (startDate, estimateDay) => {
   return null;
 };
 
-export const convertFrontEndDateTime = date => {
+export const convertFrontEndDateTime = (date) => {
   if (date) {
     return moment(date).format("DD-MM-YYYY");
   }
@@ -34,7 +34,7 @@ export const convertFrontEndDateTime = date => {
   return "N/A";
 };
 
-export const convertFrontEndDateTime2 = date => {
+export const convertFrontEndDateTime2 = (date) => {
   if (date) {
     return moment(date).format("HH:mm DD-MM-YYYY");
   }

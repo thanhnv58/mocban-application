@@ -11,11 +11,13 @@ import NotFound from "./../../views/not-found/NotFound";
 import DashboardScreen from "../manager-screen/ManagerScreen";
 import LoginScreen from "./../common-user/LoginScreen";
 import LogoutScreen from "./../common-user/LogoutScreen";
-import SaleScreen from "./../sale/SaleScreen";
+import SaleMainScreen from "../sale/SaleMainScreen";
 import styles from "./styles";
 import TechnicianScreen from "../technician-screen/TechnicianScreen";
 import ManagerScreen from "../manager-screen/ManagerScreen";
 import ChangePasswordScreen from "../common-user/ChangePasswordScreen";
+import Forbidden from "../../views/403-forbidden/Forbidden";
+import AdminMainScreen from "../admin/AdminMainScreen";
 
 class App extends Component {
   componentDidMount() {
@@ -72,12 +74,12 @@ class App extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.commonUser.isAuthenticated,
-  ui_isValidateToken: state.commonUser.ui_isValidateToken
+  ui_isValidateToken: state.commonUser.ui_isValidateToken,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ actValidateToken }, dispatch);
 };
 
@@ -94,47 +96,53 @@ const routes = [
     component: () => (
       <Redirect
         to={{
-          pathname: "/login"
+          pathname: "/login",
         }}
       />
-    )
+    ),
   },
   {
     path: "/login",
-    component: () => <LoginScreen />
+    component: () => <LoginScreen />,
   },
   {
     path: "/logout",
-    component: () => <LogoutScreen />
+    component: () => <LogoutScreen />,
+  },
+  {
+    path: "/403",
+    component: () => <Forbidden />,
   },
   {
     path: "/change-password",
-    component: () => <ChangePasswordScreen />
+    component: () => <ChangePasswordScreen />,
   },
   {
     path: "/dashboard",
     component: ({ location, match }) => (
       <DashboardScreen location={location} match={match} />
-    )
+    ),
   },
   {
     path: "/sale",
-    component: ({ location, match }) => (
-      <SaleScreen location={location} match={match} />
-    )
+    component: () => <SaleMainScreen />,
+  },
+  {
+    path: "/admin",
+    component: () => <AdminMainScreen />,
   },
   {
     path: "/accountant",
     component: ({ location, match }) => (
       <AccountantScreen location={location} match={match} />
-    )
+    ),
   },
   {
     path: "/technician",
-    component: () => <TechnicianScreen />
+    component: () => <TechnicianScreen />,
   },
   {
     path: "/manager",
-    component: () => <ManagerScreen />
-  }
+    component: () => <ManagerScreen />,
+  },
 ];

@@ -1,14 +1,14 @@
 import { call, put, takeEvery, select } from "redux-saga/effects";
 import * as TaskScreenActType from "../../../actions/technician/task-screen-action/types";
 import * as orderApis from "../../../utils/api/orderApis";
-import { toastSuccess } from "./../../../utils/toastUtils";
+import { toastSuccess } from "./../../../utils/ToastUtils";
 
 function* getListTask(action) {
   const response = yield call(orderApis.fetchListOrder, 0);
 
   if (response === null) {
     yield put({
-      type: TaskScreenActType.GET_LIST_TASK_FAILED
+      type: TaskScreenActType.GET_LIST_TASK_FAILED,
     });
     return;
   }
@@ -17,7 +17,7 @@ function* getListTask(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: TaskScreenActType.GET_LIST_TASK_NO_CONTENT
+      type: TaskScreenActType.GET_LIST_TASK_NO_CONTENT,
     });
     return;
   }
@@ -25,12 +25,12 @@ function* getListTask(action) {
   // Case SUCCESS
   yield put({
     type: TaskScreenActType.GET_LIST_TASK_SUCCESS,
-    pageTaskResponse: response.data
+    pageTaskResponse: response.data,
   });
 }
 
 function* loadMoreListTask(action) {
-  const pageTask = yield select(state => state.technicianReducer.pageTask);
+  const pageTask = yield select((state) => state.technicianReducer.pageTask);
 
   let { currentPage } = pageTask;
 
@@ -38,7 +38,7 @@ function* loadMoreListTask(action) {
 
   if (response === null) {
     yield put({
-      type: TaskScreenActType.LOAD_MORE_LIST_TASK_FAILED
+      type: TaskScreenActType.LOAD_MORE_LIST_TASK_FAILED,
     });
     return;
   }
@@ -46,7 +46,7 @@ function* loadMoreListTask(action) {
   // Case SUCCESS
   yield put({
     type: TaskScreenActType.LOAD_MORE_LIST_TASK_SUCCESS,
-    pageLoadMoreRes: response.data
+    pageLoadMoreRes: response.data,
   });
 }
 
@@ -57,7 +57,7 @@ function* getTaskDetail(action) {
 
   if (response === null) {
     yield put({
-      type: TaskScreenActType.GET_TASK_DETAIL_FAILED
+      type: TaskScreenActType.GET_TASK_DETAIL_FAILED,
     });
     return;
   }
@@ -65,7 +65,7 @@ function* getTaskDetail(action) {
   // Case SUCCESS
   yield put({
     type: TaskScreenActType.GET_TASK_DETAIL_SUCCESS,
-    orderDetailRes: response.data
+    orderDetailRes: response.data,
   });
 }
 
@@ -76,7 +76,7 @@ function* updateProgressTask(action) {
 
   if (response === null) {
     yield put({
-      type: TaskScreenActType.UPDATE_PROGRESS_FAILED
+      type: TaskScreenActType.UPDATE_PROGRESS_FAILED,
     });
     return;
   }
@@ -85,7 +85,7 @@ function* updateProgressTask(action) {
   toastSuccess("Cập nhật tiến độ thành công!");
   yield put({
     type: TaskScreenActType.UPDATE_PROGRESS_SUCCESS,
-    updateProgressRes: response.data
+    updateProgressRes: response.data,
   });
 }
 
@@ -96,7 +96,7 @@ function* updateItems(action) {
 
   if (response === null) {
     yield put({
-      type: TaskScreenActType.UPDATE_ITEMS_FAILED
+      type: TaskScreenActType.UPDATE_ITEMS_FAILED,
     });
     return;
   }
@@ -105,7 +105,7 @@ function* updateItems(action) {
   toastSuccess("Cập nhật sản phẩm thành công!");
   yield put({
     type: TaskScreenActType.UPDATE_ITEMS_SUCCESS,
-    updateItemsRes: response.data
+    updateItemsRes: response.data,
   });
 }
 
@@ -114,5 +114,5 @@ export const technician_TaskScreen = [
   takeEvery(TaskScreenActType.LOAD_MORE_LIST_TASK, loadMoreListTask),
   takeEvery(TaskScreenActType.GET_TASK_DETAIL, getTaskDetail),
   takeEvery(TaskScreenActType.UPDATE_PROGRESS, updateProgressTask),
-  takeEvery(TaskScreenActType.UPDATE_ITEMS, updateItems)
+  takeEvery(TaskScreenActType.UPDATE_ITEMS, updateItems),
 ];

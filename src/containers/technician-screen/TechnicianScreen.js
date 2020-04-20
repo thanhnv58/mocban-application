@@ -9,7 +9,7 @@ import MyDrawerTechnician from "../../components/drawer/MyDrawerTechnician";
 import * as UserRole from "../../constants/UserRole";
 import {
   helpers_GetLocalToken,
-  helpers_hasPermission
+  helpers_hasPermission,
 } from "../../utils/helpers";
 import MainScreen from "./main-screen/MainScreen";
 import ListTaskScreen from "./task-screen/ListTaskScreen";
@@ -21,13 +21,13 @@ class TechnicianScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
     };
   }
 
   handleDrawerToggle = () => {
     this.setState({
-      mobileOpen: !this.state.mobileOpen
+      mobileOpen: !this.state.mobileOpen,
     });
   };
 
@@ -40,7 +40,7 @@ class TechnicianScreen extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/login"
+            pathname: "/login",
           }}
         />
       );
@@ -52,14 +52,14 @@ class TechnicianScreen extends Component {
         !helpers_hasPermission(role, [
           UserRole.DESIGN,
           UserRole.PRODUCER,
-          UserRole.ADMIN_SYSTEM,
-          UserRole.MANAGER
+          UserRole.ADMIN,
+          UserRole.MANAGER,
         ])
       ) {
         return (
           <Redirect
             to={{
-              pathname: "/notfound"
+              pathname: "/notfound",
             }}
           />
         );
@@ -97,11 +97,11 @@ class TechnicianScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.autcommonUserh
+const mapStateToProps = (state) => ({
+  auth: state.autcommonUserh,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({}, dispatch);
 };
 
@@ -118,26 +118,26 @@ const routes = [
     render: () => (
       <Redirect
         to={{
-          pathname: "/technician/home"
+          pathname: "/technician/home",
         }}
       />
-    )
+    ),
   },
   {
     path: "/technician/home",
-    render: () => <MainScreen />
+    render: () => <MainScreen />,
   },
   {
     path: "/technician/task-list",
     render: () => {
       return <ListTaskScreen />;
-    }
+    },
   },
   {
     path: "/technician/task-detail/:orderId",
     render: ({ match }) => {
       let { params } = match;
       return <TaskDetailScreen orderId={parseInt(params.orderId)} />;
-    }
-  }
+    },
+  },
 ];

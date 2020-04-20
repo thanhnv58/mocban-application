@@ -4,6 +4,7 @@ import accountantReducer from "./accountant/accountant-reducers";
 import commonUser from "./common-user";
 import notificationReducer from "./notification/notification-reducers";
 import saleReducer from "./sale/sale-reducers";
+import adminReducer from "./admin/admin-reducers";
 import statisticReducer from "./statistic/statistic-reducers";
 import technicianReducer from "./technician/technician-reducers";
 import managerReducer from "./manager/manager-reducers";
@@ -12,11 +13,12 @@ const rootReducer = combineReducers({
   form: formReducer,
   commonUser,
   saleReducer,
+  adminReducer,
   accountantReducer,
   notificationReducer,
   statisticReducer,
   technicianReducer,
-  managerReducer
+  managerReducer,
 });
 
 export default rootReducer;

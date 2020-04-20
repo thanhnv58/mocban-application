@@ -1,0 +1,4 @@
+export const JUST_APPROACHED = "JUST_APPROACHED";
+export const HAVE_DEMAND = "HAVE_DEMAND";
+export const HAVE_ORDER = "HAVE_ORDER";
+export const AFTER_SERVICE = "AFTER_SERVICE";

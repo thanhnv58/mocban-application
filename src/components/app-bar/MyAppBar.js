@@ -20,7 +20,7 @@ class MyAppBar extends Component {
 
     this.state = {
       anchorEl: null,
-      mobileMoreAnchorEl: null
+      mobileMoreAnchorEl: null,
     };
   }
 
@@ -191,10 +191,10 @@ class MyAppBar extends Component {
           style={{ textDecoration: "none", color: "black" }}
           activeStyle={{
             fontWeight: "bold",
-            color: "#03a9f4"
+            color: "#03a9f4",
           }}
         >
-          <MenuItem onClick={this.handleMenuClose}>Trang chủ</MenuItem>
+          <MenuItem onClick={this.handleMenuClose}>Thay đổi chức năng</MenuItem>
         </NavLink>
 
         <NavLink
@@ -202,7 +202,7 @@ class MyAppBar extends Component {
           style={{ textDecoration: "none", color: "black" }}
           activeStyle={{
             fontWeight: "bold",
-            color: "#03a9f4"
+            color: "#03a9f4",
           }}
         >
           <MenuItem onClick={this.handleMenuClose}>Đổi mật khẩu</MenuItem>
@@ -213,7 +213,7 @@ class MyAppBar extends Component {
           style={{ textDecoration: "none", color: "black" }}
           activeStyle={{
             fontWeight: "bold",
-            color: "#03a9f4"
+            color: "#03a9f4",
           }}
         >
           <MenuItem onClick={this.handleMenuClose}>Đăng xuất</MenuItem>
@@ -222,35 +222,35 @@ class MyAppBar extends Component {
     );
   };
 
-  handleProfileMenuOpen = event => {
+  handleProfileMenuOpen = (event) => {
     this.setState({
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   };
 
-  handleMobileMenuOpen = event => {
+  handleMobileMenuOpen = (event) => {
     this.setState({
-      mobileMoreAnchorEl: event.currentTarget
+      mobileMoreAnchorEl: event.currentTarget,
     });
   };
 
   handleMobileMenuClose = () => {
     this.setState({
-      mobileMoreAnchorEl: null
+      mobileMoreAnchorEl: null,
     });
   };
 
   handleMenuClose = () => {
     this.setState({
-      anchorEl: null
+      anchorEl: null,
     });
     this.handleMobileMenuClose();
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   username: state.commonUser.username,
-  role: state.commonUser.role
+  role: state.commonUser.role,
 });
 
 const connectRedux = connect(mapStateToProps);

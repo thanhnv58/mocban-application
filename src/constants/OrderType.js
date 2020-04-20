@@ -1,2 +1,2 @@
 export const DESIGN = "DESIGN";
-export const PRODUCTION = "PRODUCTION";
+export const PRODUCT = "PRODUCT";

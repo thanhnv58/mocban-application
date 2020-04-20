@@ -14,7 +14,7 @@ class LoginScreen extends Component {
 
     this.state = {
       selectedRole: null,
-      open: true
+      open: true,
     };
   }
 
@@ -28,7 +28,7 @@ class LoginScreen extends Component {
 
     // System error, plz check back-end system
     if (!listRole || listRole.length === 0) {
-      return <div>Có lỗi hệ thống!!!!!!!!!</div>;
+      return <div>Bạn không tồn tại trong hệ thống!</div>;
     }
 
     // Show popup to choice role
@@ -59,7 +59,15 @@ class LoginScreen extends Component {
         return (
           <Redirect
             to={{
-              pathname: "/sale"
+              pathname: "/sale",
+            }}
+          />
+        );
+      case UserRole.ADMIN:
+        return (
+          <Redirect
+            to={{
+              pathname: "/admin",
             }}
           />
         );
@@ -67,7 +75,7 @@ class LoginScreen extends Component {
         return (
           <Redirect
             to={{
-              pathname: "/accountant"
+              pathname: "/accountant",
             }}
           />
         );
@@ -76,16 +84,7 @@ class LoginScreen extends Component {
         return (
           <Redirect
             to={{
-              pathname: "/technician"
-            }}
-          />
-        );
-      case UserRole.MANAGER:
-      case UserRole.ADMIN_SYSTEM:
-        return (
-          <Redirect
-            to={{
-              pathname: "/manager"
+              pathname: "/technician",
             }}
           />
         );
@@ -94,17 +93,17 @@ class LoginScreen extends Component {
     }
   }
 
-  handleClose = role => {
+  handleClose = (role) => {
     this.setState({
       open: false,
-      selectedRole: role
+      selectedRole: role,
     });
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.commonUser.isAuthenticated,
-  listRole: state.commonUser.listRole
+  listRole: state.commonUser.listRole,
 });
 
 const connectRedux = connect(mapStateToProps);

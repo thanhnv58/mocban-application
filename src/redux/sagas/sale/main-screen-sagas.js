@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import * as MainScreenActType from "./../../../actions/sale/main-screen-action/types";
 import * as statisticApis from "./../../../utils/api/statisticApis";
-// import * as toastUtils from "./../../../utils/toastUtils";
+// import * as toastUtils from "./../../../utils/ToastUtils";
 
 function* getStatisticOfMonth(action) {
   let { month, year } = action;
@@ -14,7 +14,7 @@ function* getStatisticOfMonth(action) {
 
   if (response === null) {
     yield put({
-      type: MainScreenActType.GET_STATISTIC_OF_MONTH_FAILED
+      type: MainScreenActType.GET_STATISTIC_OF_MONTH_FAILED,
     });
     return;
   }
@@ -22,7 +22,7 @@ function* getStatisticOfMonth(action) {
   // Case SUCCESS
   yield put({
     type: MainScreenActType.GET_STATISTIC_OF_MONTH_SUCCESS,
-    statisticOfMonth: response.data
+    statisticOfMonth: response.data,
   });
 }
 
@@ -33,7 +33,7 @@ function* getStatisticOfYear(action) {
 
   if (response === null) {
     yield put({
-      type: MainScreenActType.GET_STATISTIC_OF_YEAR_FAILED
+      type: MainScreenActType.GET_STATISTIC_OF_YEAR_FAILED,
     });
     return;
   }
@@ -41,11 +41,11 @@ function* getStatisticOfYear(action) {
   // Case SUCCESS
   yield put({
     type: MainScreenActType.GET_STATISTIC_OF_YEAR_SUCCESS,
-    statisticOfYear: response.data
+    statisticOfYear: response.data,
   });
 }
 
 export const sale_MainScreenSagas = [
   takeEvery(MainScreenActType.GET_STATISTIC_OF_MONTH, getStatisticOfMonth),
-  takeEvery(MainScreenActType.GET_STATISTIC_OF_YEAR, getStatisticOfYear)
+  takeEvery(MainScreenActType.GET_STATISTIC_OF_YEAR, getStatisticOfYear),
 ];

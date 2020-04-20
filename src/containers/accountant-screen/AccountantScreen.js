@@ -8,7 +8,7 @@ import MyAppBar from "../../components/app-bar/MyAppBar";
 import * as UserRole from "../../constants/UserRole";
 import {
   helpers_hasPermission,
-  helpers_GetLocalToken
+  helpers_GetLocalToken,
 } from "../../utils/helpers";
 import styles from "./styles";
 import MyDrawerAccountant from "../../components/drawer/MyDrawerAccountant";
@@ -25,13 +25,13 @@ class AccountantScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
     };
   }
 
   handleDrawerToggle = () => {
     this.setState({
-      mobileOpen: !this.state.mobileOpen
+      mobileOpen: !this.state.mobileOpen,
     });
   };
 
@@ -44,7 +44,7 @@ class AccountantScreen extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/login"
+            pathname: "/login",
           }}
         />
       );
@@ -55,14 +55,14 @@ class AccountantScreen extends Component {
       if (
         !helpers_hasPermission(role, [
           UserRole.ACCOUNTANT,
-          UserRole.ADMIN_SYSTEM,
-          UserRole.MANAGER
+          UserRole.ADMIN,
+          UserRole.MANAGER,
         ])
       ) {
         return (
           <Redirect
             to={{
-              pathname: "/notfound"
+              pathname: "/notfound",
             }}
           />
         );
@@ -100,11 +100,11 @@ class AccountantScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.commonUser
+const mapStateToProps = (state) => ({
+  auth: state.commonUser,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({}, dispatch);
 };
 
@@ -121,20 +121,20 @@ const routes = [
     render: () => (
       <Redirect
         to={{
-          pathname: "/accountant/home"
+          pathname: "/accountant/home",
         }}
       />
-    )
+    ),
   },
   {
     path: "/accountant/home",
-    render: () => <MainScreen />
+    render: () => <MainScreen />,
   },
   {
     path: "/accountant/list-client",
     render: () => {
       return <ListClientScreen />;
-    }
+    },
   },
   {
     path: "/accountant/transaction/:clientUsername",
@@ -143,7 +143,7 @@ const routes = [
       return (
         <ClientTransactionListScreen clientUsername={params.clientUsername} />
       );
-    }
+    },
   },
   {
     path: "/accountant/create-transaction",
@@ -154,18 +154,18 @@ const routes = [
           clientUsername={values.clientId ? values.clientId : null}
         />
       );
-    }
+    },
   },
   {
     path: "/accountant/list-transaction",
     render: () => {
       return <SearchTransactionScreen />;
-    }
+    },
   },
   {
     path: "/accountant/validate-transaction",
     render: () => {
       return <ValidateTransactionScreen />;
-    }
-  }
+    },
+  },
 ];

@@ -24,7 +24,7 @@ class ChangePasswordForm extends Component {
       invalid,
       isChangePassword,
       handleSubmit,
-      username
+      username,
     } = this.props;
 
     return (
@@ -47,7 +47,7 @@ class ChangePasswordForm extends Component {
               label="Tên đăng nhập"
               defaultValue={username}
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               fullWidth
               variant="outlined"
@@ -61,6 +61,7 @@ class ChangePasswordForm extends Component {
               required
               fullWidth
               label="Mật khẩu cũ"
+              type="password"
               autoFocus
             />
             <Field
@@ -71,6 +72,7 @@ class ChangePasswordForm extends Component {
               required
               fullWidth
               label="Mật khẩu mới"
+              type="password"
             />
 
             <Box mt={2}>
@@ -98,24 +100,24 @@ class ChangePasswordForm extends Component {
     );
   }
 
-  changePassword = values => {
+  changePassword = (values) => {
     let { txtOldPassword, txtNewPassword } = values;
     let { changePassword } = this.props;
     changePassword({
       oldPassword: txtOldPassword,
-      newPassword: txtNewPassword
+      newPassword: txtNewPassword,
     });
   };
 }
 
-const mapStateToProps = state => ({
-  isChangePassword: state.commonUser.isChangePassword
+const mapStateToProps = (state) => ({
+  isChangePassword: state.commonUser.isChangePassword,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      changePassword
+      changePassword,
     },
     dispatch
   );
@@ -125,7 +127,7 @@ const connectRedux = connect(mapStateToProps, mapDispatchToProps);
 
 const withMyStyle = withStyles(styles);
 
-export const validate = values => {
+export const validate = (values) => {
   const errors = {};
 
   let { txtOldPassword, txtNewPassword } = values;
@@ -149,7 +151,7 @@ export const validate = values => {
 
 const form = reduxForm({
   form: "CHANGE_PASSWORD_FORM",
-  validate
+  validate,
 });
 
 export default compose(withMyStyle, connectRedux, form)(ChangePasswordForm);

@@ -1,14 +1,14 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import * as NotificationActionType from "./../../../actions/notification-action/types";
 import * as notificationApis from "./../../../utils/api/notificationApis";
-import * as toastUtils from "./../../../utils/toastUtils";
+import * as toastUtils from "./../../../utils/ToastUtils";
 
 function* getNotification(action) {
   const response = yield call(notificationApis.getNotification, 0);
 
   if (response === null) {
     yield put({
-      type: NotificationActionType.GET_NOTIFICATION_FAILED
+      type: NotificationActionType.GET_NOTIFICATION_FAILED,
     });
     return;
   }
@@ -17,7 +17,7 @@ function* getNotification(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: NotificationActionType.GET_NOTIFICATION_NO_CONTENT
+      type: NotificationActionType.GET_NOTIFICATION_NO_CONTENT,
     });
     return;
   }
@@ -26,7 +26,7 @@ function* getNotification(action) {
   // toastUtils.toastSuccess("Tạo khách hàng thành công!");
   yield put({
     type: NotificationActionType.GET_NOTIFICATION_SUCCESS,
-    pageNotificationRes: response.data
+    pageNotificationRes: response.data,
   });
 }
 
@@ -39,7 +39,7 @@ function* removeNotification(action) {
 
   if (response === null) {
     yield put({
-      type: NotificationActionType.REMOVE_NOTIFICATION_FAILED
+      type: NotificationActionType.REMOVE_NOTIFICATION_FAILED,
     });
     return;
   }
@@ -48,7 +48,7 @@ function* removeNotification(action) {
   let { status } = response;
   if (status === 204) {
     yield put({
-      type: NotificationActionType.REMOVE_NOTIFICATION_SUCCESS
+      type: NotificationActionType.REMOVE_NOTIFICATION_SUCCESS,
     });
     return;
   }
@@ -57,11 +57,11 @@ function* removeNotification(action) {
   toastUtils.toastSuccess("Xóa thông báo thành công!");
   yield put({
     type: NotificationActionType.REMOVE_NOTIFICATION_SUCCESS,
-    notificationId
+    notificationId,
   });
 }
 
 export const notificationSagas = [
   takeEvery(NotificationActionType.GET_NOTIFICATION, getNotification),
-  takeEvery(NotificationActionType.REMOVE_NOTIFICATION, removeNotification)
+  takeEvery(NotificationActionType.REMOVE_NOTIFICATION, removeNotification),
 ];

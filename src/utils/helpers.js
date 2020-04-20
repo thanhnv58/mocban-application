@@ -7,6 +7,7 @@ import * as UserRole from "./../constants/UserRole";
 import * as NotificationType from "./../constants/NotificationType";
 import * as TransactionType from "./../constants/TransactionType";
 import * as TransactionOwner from "./../constants/TransactionOwner";
+import * as ClientStatus from "./../constants/ClientStatus";
 
 export const helpers_GetLocalToken = () => {
   let authObj = JSON.parse(localStorage.getItem("MB_AUTH"));
@@ -31,7 +32,7 @@ export const helpers_GetLocalToken = () => {
 };
 
 // eslint-disable-next-line require-yield
-export const helpers_SaveAuthToStorage = data => {
+export const helpers_SaveAuthToStorage = (data) => {
   let { token, duration } = data;
 
   let expiredTime = moment()
@@ -40,7 +41,7 @@ export const helpers_SaveAuthToStorage = data => {
 
   let authObj = {
     token,
-    expiredTime
+    expiredTime,
   };
 
   localStorage.setItem("MB_AUTH", JSON.stringify(authObj));
@@ -53,7 +54,7 @@ export const getToken = () => {
   return authObj;
 };
 
-export const getPhase = phase => {
+export const getPhase = (phase) => {
   switch (phase) {
     case ProjectPhase.EXCHANGE:
       return "ĐANG TRAO ĐỔI VỚI KHÁCH HÀNG";
@@ -74,7 +75,7 @@ export const getPhase = phase => {
   }
 };
 
-export const getStatus = status => {
+export const getStatus = (status) => {
   switch (status) {
     case ProjectStatus.UN_CONFIRM:
       return "CHƯA XÁC NHẬN CÔNG VIỆC";
@@ -89,12 +90,21 @@ export const getStatus = status => {
   }
 };
 
-export const helpers_getUserRole = role => {
+export const helpers_getUserRole = (role) => {
   switch (role) {
-    case UserRole.ADMIN_SYSTEM:
-      return "Nhân viên Hệ thống";
+    case UserRole.ADMIN:
+      return "Admin";
+    case UserRole.MANAGER:
+      return "Quản lý";
     case UserRole.DESIGN:
       return "Thiết kế";
+    case UserRole.WORKER:
+      return "Anh em xưởng";
+    case UserRole.ACCOUNTANT:
+      return "Kế toán";
+    case UserRole.COMPLETER:
+      return "Anh em hoàn thiện";
+
     case UserRole.DESIGN_LEADER:
       return "Trưởng thiết kế";
     case UserRole.SALE:
@@ -103,27 +113,24 @@ export const helpers_getUserRole = role => {
       return "Thợ mộc";
     case UserRole.PRODUCER_LEADER:
       return "Trưởng thợ mộc";
-    case UserRole.MANAGER:
-      return "Quản lý";
-    case UserRole.ACCOUNTANT:
-      return "Kế toán";
+
     default:
       return "N/A";
   }
 };
 
-export const getOrderType = type => {
+export const getOrderType = (type) => {
   switch (type) {
     case OrderType.DESIGN:
       return "ĐH - THIẾT KẾ";
-    case OrderType.PRODUCTION:
+    case OrderType.PRODUCT:
       return "ĐH - SẢN XUẤT";
     default:
       return "N/A";
   }
 };
 
-export const getTransactionOwner = type => {
+export const getTransactionOwner = (type) => {
   switch (type) {
     case TransactionOwner.ALL:
       return "Tất cả";
@@ -136,7 +143,7 @@ export const getTransactionOwner = type => {
   }
 };
 
-export const getOrderStatus = status => {
+export const getOrderStatus = (status) => {
   switch (status) {
     case OrderStatus.NOT_VALIDATE:
       return "Tới Kế Toán";
@@ -151,7 +158,7 @@ export const getOrderStatus = status => {
   }
 };
 
-export const getStatusColor = status => {
+export const getStatusColor = (status) => {
   switch (status) {
     case OrderStatus.NOT_VALIDATE:
       return "#9e9e9e";
@@ -166,7 +173,7 @@ export const getStatusColor = status => {
   }
 };
 
-export const getTaskStatus = status => {
+export const getTaskStatus = (status) => {
   switch (status) {
     case OrderStatus.VALIDATE_TRUE:
       return "Chưa làm";
@@ -179,7 +186,7 @@ export const getTaskStatus = status => {
   }
 };
 
-export const getTaskColor = status => {
+export const getTaskColor = (status) => {
   switch (status) {
     case OrderStatus.VALIDATE_TRUE:
       return "#757575";
@@ -192,7 +199,7 @@ export const getTaskColor = status => {
   }
 };
 
-export const getNotificationType = type => {
+export const getNotificationType = (type) => {
   switch (type) {
     case NotificationType.VALIDATE_ORDER:
       return "XÁC THỰC ĐƠN HÀNG";
@@ -201,7 +208,7 @@ export const getNotificationType = type => {
   }
 };
 
-export const getTransactionType = type => {
+export const getTransactionType = (type) => {
   switch (type) {
     case TransactionType.INCOME:
       return "THU";
@@ -212,7 +219,7 @@ export const getTransactionType = type => {
   }
 };
 
-export const getTransactionTypeColor = type => {
+export const getTransactionTypeColor = (type) => {
   switch (type) {
     case TransactionType.INCOME:
       return "green";
@@ -223,7 +230,7 @@ export const getTransactionTypeColor = type => {
   }
 };
 
-export const getTransactionOwnerColor = type => {
+export const getTransactionOwnerColor = (type) => {
   switch (type) {
     case TransactionOwner.CLIENT:
       return "green";
@@ -236,16 +243,16 @@ export const getTransactionOwnerColor = type => {
 
 const formatterCurrency = new Intl.NumberFormat("vi-VI", {
   style: "currency",
-  currency: "VND"
+  currency: "VND",
 });
 
-export const getCurrency = amount => {
+export const getCurrency = (amount) => {
   if (!amount) return 0;
 
   return formatterCurrency.format(amount);
 };
 
-export const getCurrencyValue = amount => {
+export const getCurrencyValue = (amount) => {
   if (!amount) return "N/A";
 
   const cleanedInput = amount.replace(/\./g, "");
@@ -262,13 +269,71 @@ export const helpers_hasPermission = (role, arrayRole) => {
 
   let hasPermission = false;
 
-  arrayRole.forEach(e => {
+  arrayRole.forEach((e) => {
     if (role === e) {
       hasPermission = true;
     }
   });
 
   return hasPermission;
+};
+
+export const helpers_toStringClientStatus = (status) => {
+  switch (status) {
+    case ClientStatus.JUST_APPROACHED:
+      return "Mới tiếp cận";
+    case ClientStatus.HAVE_DEMAND:
+      return "Đang có nhu cầu";
+    case ClientStatus.HAVE_ORDER:
+      return "Đang có đơn hàng";
+    case ClientStatus.AFTER_SERVICE:
+      return "Khách hàng cũ";
+    default:
+      return "N/A";
+  }
+};
+
+export const helpers_toStringOrderStatus = (status) => {
+  switch (status) {
+    case OrderStatus.INIT:
+      return "Khởi tạo đơn hàng";
+    case OrderStatus.PAYMENT_1:
+      return "Thanh toán đợt 1";
+    case OrderStatus.PAYMENT_1_OK:
+      return "Xác nhận thanh toán 1";
+    case OrderStatus.DESIGN_IN_PROGRESS:
+      return "Thiết kế";
+
+    case OrderStatus.DESIGN_DONE:
+      return "Hoàn thành thiết kế";
+
+    case OrderStatus.PAYMENT_2:
+      return "Thanh toán đợt 2";
+    case OrderStatus.PAYMENT_2_OK:
+      return "Xác nhận thanh toán 2";
+
+    case OrderStatus.FINISH:
+      return "Hoàn thành";
+
+    case OrderStatus.TO_PRODUCE:
+      return "Chuyển sang làm đồ";
+
+    case OrderStatus.PRODUCE_IN_PROGRESS:
+      return "Làm đồ";
+    case OrderStatus.PRODUCE_DONE:
+      return "Hoàn thành làm đồ";
+
+    case OrderStatus.COMPLETE_IN_PROGRESS:
+      return "Lắp hàng";
+    case OrderStatus.COMPLETE_DONE:
+      return "Hoàn thành lắp hàng";
+    case OrderStatus.PAYMENT_3:
+      return "Thanh toán đợt 3";
+    case OrderStatus.PAYMENT_3_OK:
+      return "Xác nhận thanh toán 3";
+    default:
+      return "N/A";
+  }
 };
 
 export const getClientId = () => {

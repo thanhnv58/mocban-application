@@ -11,7 +11,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import { withStyles } from "@material-ui/core/styles";
@@ -27,15 +27,15 @@ import * as TransactionType from "../../../constants/TransactionType";
 import {
   getCurrency,
   getTransactionType,
-  getTransactionTypeColor
+  getTransactionTypeColor,
 } from "../../../utils/helpers";
 import { Prompt } from "react-router-dom";
 import { convertFrontEndDateTime } from "../../../utils/timeUtils";
-import { toastError } from "../../../utils/toastUtils";
+import { toastError } from "../../../utils/ToastUtils";
 import { findIndexOfElementInArray } from "../../../utils/arrayUtils";
 import {
   createAllTransactions,
-  confirmCreateSuccess
+  confirmCreateSuccess,
 } from "../../../actions/accountant/transaction-screen/actions";
 import styles from "./styles";
 
@@ -46,7 +46,7 @@ class CreateTransactionScreen extends Component {
     let { clientUsername } = this.props;
     this.state = {
       radioTransactionMode: clientUsername ? 1 : 0,
-      listTransaction: []
+      listTransaction: [],
     };
   }
 
@@ -56,7 +56,7 @@ class CreateTransactionScreen extends Component {
     if (isSuccess) {
       confirmCreateSuccess();
       this.setState({
-        listTransaction: []
+        listTransaction: [],
       });
     }
   }
@@ -71,7 +71,7 @@ class CreateTransactionScreen extends Component {
       <React.Fragment>
         <Prompt
           when={isBlocking}
-          message={location => `Bạn có muốn rời đi khi chưa Lưu giao dịch`}
+          message={(location) => `Bạn có muốn rời đi khi chưa Lưu giao dịch`}
         />
         <Box mt={0} mb={4}>
           <Typography variant="h6" align="left">
@@ -130,16 +130,16 @@ class CreateTransactionScreen extends Component {
     );
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     let { target } = e;
     let { name, value } = target;
 
     this.setState({
-      [name]: parseInt(value)
+      [name]: parseInt(value),
     });
   };
 
-  addTransactionToList = transaction => {
+  addTransactionToList = (transaction) => {
     let { listTransaction } = this.state;
 
     if (
@@ -154,13 +154,13 @@ class CreateTransactionScreen extends Component {
 
     listTransaction.push(transaction);
     this.setState({
-      listTransaction: listTransaction
+      listTransaction: listTransaction,
     });
   };
 
-  removeTransaction = transactionId => {
+  removeTransaction = (transactionId) => {
     let { listTransaction } = this.state;
-    let index = findIndexOfElementInArray(listTransaction, e => {
+    let index = findIndexOfElementInArray(listTransaction, (e) => {
       return e.id === transactionId;
     });
 
@@ -168,7 +168,7 @@ class CreateTransactionScreen extends Component {
       listTransaction.splice(index, 1);
 
       this.setState({
-        listTransaction: listTransaction
+        listTransaction: listTransaction,
       });
     }
   };
@@ -177,18 +177,18 @@ class CreateTransactionScreen extends Component {
     let { listTransaction } = this.state;
     let { createAllTransactions } = this.props;
 
-    let transactions = listTransaction.map(t => {
+    let transactions = listTransaction.map((t) => {
       return {
         messageAmount: t.messageAmount,
         amount: t.amount,
-        createdDate: t.createdDate
+        createdDate: t.createdDate,
       };
     });
 
     let requestDto = {
       clientUsername: listTransaction[0].clientUsername,
       type: TransactionType.PAY,
-      transactions: transactions
+      transactions: transactions,
     };
 
     createAllTransactions(requestDto);
@@ -246,7 +246,7 @@ class CreateTransactionScreen extends Component {
                     <StyledTableCell align="center">
                       <b
                         style={{
-                          color: getTransactionTypeColor(transaction.type)
+                          color: getTransactionTypeColor(transaction.type),
                         }}
                       >
                         {getTransactionType(transaction.type)}
@@ -305,16 +305,16 @@ class CreateTransactionScreen extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading1: state.accountantReducer.ui.isLoading1,
-  createAllTransaction: state.accountantReducer.createAllTransaction
+  createAllTransaction: state.accountantReducer.createAllTransaction,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       createAllTransactions,
-      confirmCreateSuccess
+      confirmCreateSuccess,
     },
     dispatch
   );
@@ -326,20 +326,20 @@ const withMyStyle = withStyles(styles);
 
 export default compose(connectRedux, withMyStyle)(CreateTransactionScreen);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
-  }
+      backgroundColor: theme.palette.background.default,
+    },
+  },
 }))(TableRow);
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: "#0288d1",
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }))(TableCell);

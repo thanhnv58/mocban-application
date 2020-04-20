@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import { Field, reduxForm } from "redux-form";
-import { updateClientRequest } from "../../actions/sale/order-screen-action/actions";
+import { updateClientRequest } from "../../actions/sale/order-management/actions";
 import * as mui from "../../utils/mui";
 import styles from "./styles";
 
@@ -55,28 +55,28 @@ class ClientRequestForm extends Component {
     );
   }
 
-  onSubmit = formData => {
+  onSubmit = (formData) => {
     let { txtClientRequest } = formData;
 
     let { updateClientRequest, orderId } = this.props;
 
     updateClientRequest({
       orderId: orderId,
-      clientRequest: txtClientRequest
+      clientRequest: txtClientRequest,
     });
   };
 }
 
 const withMyStyle = withStyles(styles);
 
-const mapStateToProps = state => ({
-  isLoading4: state.saleReducer.ui.isLoading4
+const mapStateToProps = (state) => ({
+  isLoading4: state.saleReducer.ui.isLoading4,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      updateClientRequest
+      updateClientRequest,
     },
     dispatch
   );
@@ -86,7 +86,7 @@ const connectRedux = connect(mapStateToProps, mapDispatchToProps);
 
 const clientRequestForm = reduxForm({
   form: "CLIENT_REQUEST_FORM",
-  enableReinitialize: true
+  enableReinitialize: true,
 });
 
 export default compose(
